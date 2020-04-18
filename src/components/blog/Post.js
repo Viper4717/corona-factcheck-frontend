@@ -27,6 +27,13 @@ export default function Post(props) {
   return (
     <CardActionArea component="a" href={post.link}>
       <Card className={classes.card} style={{ height }}>
+        <Hidden xsDown>
+          <CardMedia
+            className={classes.cardMedia}
+            image={post.image}
+            title={post.imageTitle}
+          />
+        </Hidden>
         <div className={classes.cardDetails}>
           <CardContent>
             <Typography component="h2" variant="h5">
@@ -42,13 +49,6 @@ export default function Post(props) {
             </Typography>
           </CardContent>
         </div>
-        <Hidden xsDown>
-          <CardMedia
-            className={classes.cardMedia}
-            image={post.image}
-            title={post.imageTitle}
-          />
-        </Hidden>
       </Card>
     </CardActionArea>
   );
