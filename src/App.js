@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import Header from "./components/headerComponent/header"
-import Header2 from "./components/headerComponent/header2"
-import "bootstrap/dist/css/bootstrap.min.css"
-import Navbar from "./navbar"
 
 class App extends Component {
   render() {
@@ -16,10 +13,8 @@ class App extends Component {
     ];
 
     return (
-      <div className="App">
-        {/*<Header links={links}/>*/}
-        <Header2 links={links}/>
-        {/*<Navbar/>*/}
+      <div className="container center">
+        <Header links={links}/>
       </div>
     );
   }

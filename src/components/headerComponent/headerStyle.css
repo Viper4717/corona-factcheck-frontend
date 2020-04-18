@@ -8,8 +8,14 @@
     position: relative;
 }
 
+.menu__logo {
+    display: inline-block;
+    padding: 20px 0;
+    margin: 0;
+}
+
 .menu__right {
-    display: flex;
+    display: none;
     align-items: center;
     height: 100%;
     padding: 0px 20px;
@@ -34,7 +40,6 @@
 
 .menu__link {
     color: #3a3e47;
-    display: inline-block;
     height: 100%;
     font-size: 16px;
     text-decoration: none;
@@ -48,8 +53,20 @@
     color: #ffaa3b;
 }
 
-.menu__logo {
-    display: inline-block;
-    padding: 20px 0;
-    margin: 0;
+.menu__down {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0px 20px;
+}
+
+@media screen and (min-width: 1280px) {
+
+    .menu__down{
+        display: none;
+    }
+
+    .menu__right {
+        display: flex;
+    }
 }
