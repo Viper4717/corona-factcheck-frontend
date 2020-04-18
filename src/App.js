@@ -4,7 +4,7 @@ import Header from "./components/headerComponent/header"
 class App extends Component {
   render() {
     let links = [
-      { label: 'নীরপাতা', link: '#home' },
+      { label: 'নীড়পাতা', link: '#home' },
       { label: 'সত্য/মিথ্যা', link: '#about' },
       { label: 'করোনা তথ্য', link: '#portfolio' },
       { label: 'এক্সটেনশন', link: '#contact-us' },
