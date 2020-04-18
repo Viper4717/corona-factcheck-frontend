@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Header from "./components/headerComponent/header"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    let links = [
+      { label: 'নীরপাতা', link: '#home' },
+      { label: 'সত্য/মিথ্যা', link: '#about' },
+      { label: 'করোনা তথ্য', link: '#portfolio' },
+      { label: 'এক্সটেনশন', link: '#contact-us' },
+      { label: 'আমাদের সম্পর্কে', link: '#contact-us' },
+      { label: 'যোগাযোগ', link: '#contact-us' },
+    ];
+
+    return (
+      <div className="container center">
+        <Header links={links}/>
+      </div>
+    );
+  }
 }
 
 export default App;
