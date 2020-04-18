@@ -15,14 +15,18 @@ const carouselHeight = '25rem';
 const cardHeight = '12rem';
 
 const useStyles = makeStyles((theme) => ({
-  carousel: {
+  Blog: {
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  Carousel: {
     marginBottom: theme.spacing(3),
   },
 }));
 
 const featuredPosts = [
   {
+    id: 0,
     title: 'Top post 1',
     date: 'Nov 10',
     description:
@@ -32,6 +36,7 @@ const featuredPosts = [
     link: 'https://google.com',
   },
   {
+    id: 1,
     title: 'Top post 2',
     date: 'Nov 12',
     description:
@@ -41,6 +46,7 @@ const featuredPosts = [
     link: 'https://google.com',
   },
   {
+    id: 2,
     title: 'Top post 3',
     date: 'Nov 11',
     description:
@@ -53,6 +59,7 @@ const featuredPosts = [
 
 const posts = [
   {
+    id: 0,
     title: 'Post 1',
     date: 'Nov 10',
     description:
@@ -62,6 +69,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 1,
     title: 'Post 2',
     date: 'Nov 12',
     description:
@@ -71,6 +79,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 2,
     title: 'Post 3',
     date: 'Nov 11',
     description:
@@ -80,6 +89,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 3,
     title: 'Post 4',
     date: 'Nov 11',
     description:
@@ -89,6 +99,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 4,
     title: 'Post 5',
     date: 'Nov 11',
     description:
@@ -98,6 +109,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 5,
     title: 'Post 6',
     date: 'Nov 11',
     description:
@@ -107,6 +119,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 6,
     title: 'Post 7',
     date: 'Nov 11',
     description:
@@ -116,6 +129,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 7,
     title: 'Post 8',
     date: 'Nov 11',
     description:
@@ -125,6 +139,7 @@ const posts = [
     link: 'https://google.com',
   },
   {
+    id: 8,
     title: 'Post 9',
     date: 'Nov 11',
     description:
@@ -150,21 +165,21 @@ export default function Blog() {
   const classes = useStyles();
 
   return (
-    <div className="Blog">
+    <div className={classes.Blog}>
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
-          <Carousel className={classes.carousel}>
+          <Carousel className={classes.Carousel}>
             {featuredPosts.map((post) => (
-              <FeaturedPost post={post} height={carouselHeight} />
+              <FeaturedPost key={post.id} post={post} height={carouselHeight} />
             ))}
           </Carousel>
           <Grid container spacing={7} justify="center">
             <Grid container item spacing={4} xs={12} lg={9}>
               {posts.map((post) => (
-                <Grid item xs={12} lg={6}>
+                <Grid key={post.id} item xs={12} lg={6}>
                   <Post
-                    key={post.title}
+                    key={post.id}
                     post={post}
                     height={cardHeight}
                   />
