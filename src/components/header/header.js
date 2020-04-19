@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import "./headerStyle.css";
 
+{/*
+    Website header
+    @author A.M. Aahad
+ */}
+
 class header extends Component {
     constructor() {
         super();

@@ -49,6 +49,10 @@
     padding: 0 3px;
 }
 
+.menu__link:visited {
+    color: #3a3e47;
+}
+
 .menu__link:hover {
     color: #ffaa3b;
 }
