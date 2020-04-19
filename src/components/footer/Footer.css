@@ -13,14 +13,14 @@
     width: 50%;
 }
 
-.aboutLink{
+.link{
     color: white;
     text-decoration: none;
 }
-.aboutLink:visited{
+.link:visited{
     color: white;
 }
-.aboutLink:hover{
+.link:hover{
     text-decoration: underline;
 }
 

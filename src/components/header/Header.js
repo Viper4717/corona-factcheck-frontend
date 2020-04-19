@@ -23,7 +23,11 @@ function Header(props) {
   return (
     <div className="siteHeader">
       <nav className="menu">
-        <h1 className="menu__logo">করোনা অনুসন্ধান</h1>
+        <h1 className="menu__logo">
+          <a className="menu__logo__link" href="/">
+            করোনা অনুসন্ধান
+          </a>
+        </h1>
         <div className="menu__right">
           <ul className="menu__list">
             {linksMarkup}

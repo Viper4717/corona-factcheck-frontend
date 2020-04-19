@@ -15,6 +15,16 @@
     margin: 0;
 }
 
+.menu__logo__link{
+    text-decoration: none;
+    color: black;
+}
+
+.menu__logo__link:visited{
+    text-decoration: none;
+    color: black;
+}
+
 .menu__right {
     display: none;
     align-items: center;

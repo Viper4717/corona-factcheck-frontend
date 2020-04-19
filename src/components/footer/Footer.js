@@ -16,7 +16,7 @@ function Footer() {
           সতর্ক হোন, গুজব প্রতিহত করুন
         </Typography>
         <Typography style={{color: "#ffffff"}} variant="body1" gutterBottom>
-          <a className="aboutLink" href="#aboutus">
+          <a className="link aboutLink" href="#aboutus">
             আমাদের সম্পর্কে
           </a>
         </Typography>
@@ -26,7 +26,7 @@ function Footer() {
           যোগাযোগ:
         </Typography>
         <Typography style={{color: "#ffffff"}} variant="body1" gutterBottom>
-          ই-মেইল: abcde@gmail.com
+          ই-মেইল: <a className="link e_mail" href="/">abcde@gmail.com</a>
         </Typography>
       </div>
     </div>
