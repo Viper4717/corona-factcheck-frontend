@@ -12,8 +12,10 @@ let links = [
 
 function App() {
   return (
-    <div className="container center">
-      <Header links={links}/>
+    <div className="App">
+      <header className="App-header">
+        <Header links={links}/>
+      </header>
     </div>
   );
 }
