@@ -7,6 +7,7 @@ import './Header.css';
 */
 
 function Header(props) {
+  const { links } = props;
   const linksMarkup = props.links.map((link, index) => {
     const linkMarkup = (
       <a className="menu__link" href={link.link}>{link.label}</a>

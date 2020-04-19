@@ -12,22 +12,24 @@ import { green, orange } from '@material-ui/core/colors';
 
 const statusCardHeight = '30px';
 const statusCardWidth = '60px';
+const statusCardInsetY = '20px';
+const statusCardInsetX = '50px';
 
 const useStyles = makeStyles({
   card: {
     padding: 20,
   },
   cardDetails: {
-    width: 250,
+    width: 210,
   },
   cardMedia: {
-    width: 130,
+    width: 170,
   },
   statusCard: {
     height: statusCardHeight,
     width: statusCardWidth,
-    marginRight: statusCardWidth,
-    marginTop: statusCardHeight,
+    marginRight: statusCardInsetX,
+    marginTop: statusCardInsetY,
     padding: '5px',
   },
   statusText: {
@@ -61,6 +63,13 @@ export default function FeaturedPost(props) {
           horizontal: 'right',
         }}
       >
+        <Hidden xsDown>
+          <CardMedia
+            className={classes.cardMedia}
+            image={post.image}
+            title={post.imageTitle}
+          />
+        </Hidden>
         <Card className={classes.card} style={{ height }}>
           <div className={classes.cardDetails}>
             <CardContent>
@@ -77,13 +86,6 @@ export default function FeaturedPost(props) {
             </CardContent>
           </div>
         </Card>
-        <Hidden xsDown>
-          <CardMedia
-            className={classes.cardMedia}
-            image={post.image}
-            title={post.imageTitle}
-          />
-        </Hidden>
       </Badge>
     </CardActionArea>
   );
