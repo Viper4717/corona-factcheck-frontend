@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './components/header/Header';
 import Blog from './components/blog/Blog';
 import Extension from "./components/extension/Extension"
+import AboutUs from './components/aboutUs/AboutUs';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '#home' },
