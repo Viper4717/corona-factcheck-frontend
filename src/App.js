@@ -1,7 +1,8 @@
 import React from 'react';
-import Header from "./components/header/Header"
+import Header from './components/header/Header';
+import Blog from './components/blog/Blog';
 
-let links = [
+const headerLinks = [
   { label: 'নীড়পাতা', link: '#home' },
   { label: 'সত্য/মিথ্যা', link: '#about' },
   { label: 'করোনা তথ্য', link: '#portfolio' },
@@ -14,8 +15,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Header links={links}/>
+        <Header links={headerLinks} />
       </header>
+      <Blog />
     </div>
   );
 }
