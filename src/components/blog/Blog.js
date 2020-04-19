@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
   Blog: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
+    minHeight: "100vh",
   },
   Carousel: {
     marginBottom: theme.spacing(3),
