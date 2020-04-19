@@ -7,8 +7,8 @@ import Container from '@material-ui/core/Container';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
+import MainFeaturedPost from './MainFeaturedPost';
 import FeaturedPost from './FeaturedPost';
-import Post from './Post';
 import Sidebar from './Sidebar';
 
 const carouselHeight = '25rem';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const featuredPosts = [
+const mainFeaturedPosts = [
   {
     id: 0,
     title: 'Top post 1',
@@ -57,7 +57,7 @@ const featuredPosts = [
   },
 ];
 
-const posts = [
+const featuredPosts = [
   {
     id: 0,
     title: 'Post 1',
@@ -67,6 +67,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imgText: 'main image description',
     link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
   {
     id: 1,
@@ -77,6 +79,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: false,
+    statusText: 'মিথ্যা',
   },
   {
     id: 2,
@@ -87,6 +91,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
   {
     id: 3,
@@ -97,6 +103,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
   {
     id: 4,
@@ -107,6 +115,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: false,
+    statusText: 'মিথ্যা',
   },
   {
     id: 5,
@@ -117,6 +127,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
   {
     id: 6,
@@ -127,6 +139,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
   {
     id: 7,
@@ -137,16 +151,8 @@ const posts = [
     image: 'https://source.unsplash.com/random',
     imageText: 'Image Text',
     link: 'https://google.com',
-  },
-  {
-    id: 8,
-    title: 'Post 9',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
+    status: true,
+    statusText: 'সত্য',
   },
 ];
 
@@ -170,15 +176,15 @@ export default function Blog() {
       <Container maxWidth="lg">
         <main>
           <Carousel className={classes.Carousel}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.id} post={post} height={carouselHeight} />
+            {mainFeaturedPosts.map((post) => (
+              <MainFeaturedPost key={post.id} post={post} height={carouselHeight} />
             ))}
           </Carousel>
           <Grid container spacing={7} justify="center">
             <Grid container item spacing={4} xs={12} lg={9}>
-              {posts.map((post) => (
-                <Grid key={post.id} item xs={12} lg={6}>
-                  <Post
+              {featuredPosts.map((post) => (
+                <Grid key={post.id} item xs={12} md={6} lg={6}>
+                  <FeaturedPost
                     key={post.id}
                     post={post}
                     height={cardHeight}
