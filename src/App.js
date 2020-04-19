@@ -1,14 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Header from './components/header/Header';
+import Blog from './components/blog/Blog';
 import Extension from "./components/extension/Extension"
 
-class App extends Component {
-  render() {
-    return (
-      <div className="container center">
-        <Extension/>
-      </div>
-    );
-  }
+const headerLinks = [
+  { label: 'নীড়পাতা', link: '#home' },
+  { label: 'সত্য/মিথ্যা', link: '#about' },
+  { label: 'করোনা তথ্য', link: '#portfolio' },
+  { label: 'এক্সটেনশন', link: '#contact-us' },
+  { label: 'আমাদের সম্পর্কে', link: '#contact-us' },
+  { label: 'যোগাযোগ', link: '#contact-us' },
+];
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <Header links={headerLinks} />
+      </header>
+      <Blog />
+    </div>
+  );
 }
 
 export default App;
