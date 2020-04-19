@@ -1,0 +1,37 @@
+.Footer{
+    background-color: #262628;
+    display: block;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.col1{
+    width: 50%;
+}
+
+.col2{
+    width: 50%;
+}
+
+.aboutLink{
+    color: white;
+    text-decoration: none;
+}
+.aboutLink:visited{
+    color: white;
+}
+.aboutLink:hover{
+    text-decoration: underline;
+}
+
+@media screen and (min-width: 1280px){
+    .Footer{
+        display: flex;
+        padding: 30px 100px;
+        justify-content: space-evenly;
+    }
+    .col2{
+        width: 50%;
+        text-align: right;
+    }
+}

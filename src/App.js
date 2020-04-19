@@ -1,6 +1,9 @@
 import React from 'react';
 import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
 import Blog from './components/blog/Blog';
+import Extension from "./components/extension/Extension"
+import AboutUs from './components/aboutUs/AboutUs';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '#home' },
@@ -8,16 +11,14 @@ const headerLinks = [
   { label: 'করোনা তথ্য', link: '#portfolio' },
   { label: 'এক্সটেনশন', link: '#contact-us' },
   { label: 'আমাদের সম্পর্কে', link: '#contact-us' },
-  { label: 'যোগাযোগ', link: '#contact-us' },
 ];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Header links={headerLinks} />
-      </header>
+      <Header links={headerLinks} />
       <Blog />
+      <Footer/>
     </div>
   );
 }
