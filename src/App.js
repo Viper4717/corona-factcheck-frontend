@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from "./components/header/Header"
+import AboutUs from "./components/aboutUs/AboutUs"
 
 let links = [
   { label: 'নীড়পাতা', link: '#home' },
@@ -13,9 +14,8 @@ let links = [
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Header links={links}/>
-      </header>
+      <Header links={links}/>
+      <AboutUs/>
     </div>
   );
 }

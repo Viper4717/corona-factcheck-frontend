@@ -1,3 +1,8 @@
+.siteHeader{
+    position: sticky;
+    top: 0;
+}
+
 .menu {
     background-color: white;
     box-shadow: 0px 2px 24px 0px rgba(0, 0, 0, 0.15);
