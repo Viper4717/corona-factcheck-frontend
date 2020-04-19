@@ -15,6 +15,7 @@ class Extension extends Component {
   render() {
     return (
       <div className="extensionPage">
+        <center>
         <Card className="card" variant="outlined">
           <CardContent>
             <Typography variant="h5" component="h2">
@@ -30,6 +31,7 @@ class Extension extends Component {
             </Button>
           </CardActions>
         </Card>
+        </center>
       </div>
     );
   }

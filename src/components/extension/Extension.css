@@ -1,8 +1,9 @@
 .extensionPage{
-    display: flex;
-    justify-content: center;
+    min-height: 100vh;
+    padding: 50px;
 }
 
 .card{
+    display: inline-block;
     box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.15);
 }
