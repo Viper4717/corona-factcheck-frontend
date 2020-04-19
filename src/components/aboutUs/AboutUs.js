@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@material-ui/core/container'
-import "./aboutUsStyle.css";
+import "./AboutUs.css";
 
 function AboutUs() {
   return (
