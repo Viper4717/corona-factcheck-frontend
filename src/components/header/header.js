@@ -6,7 +6,7 @@ import "./headerStyle.css";
     @author A.M. Aahad
  */}
 
-class header extends Component {
+class Header extends Component {
     constructor() {
         super();
     }
@@ -45,4 +45,4 @@ class header extends Component {
 }
 
 
-export default header;
+export default Header;
