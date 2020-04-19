@@ -11,7 +11,6 @@ const headerLinks = [
   { label: 'করোনা তথ্য', link: '#portfolio' },
   { label: 'এক্সটেনশন', link: '#contact-us' },
   { label: 'আমাদের সম্পর্কে', link: '#contact-us' },
-  { label: 'যোগাযোগ', link: '#contact-us' },
 ];
 
 function App() {
