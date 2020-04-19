@@ -1,5 +1,5 @@
 import React from 'react';
-import Container from '@material-ui/core/Container'
+import Container from '@material-ui/core/Container';
 import "./AboutUs.css";
 
 function AboutUs() {
