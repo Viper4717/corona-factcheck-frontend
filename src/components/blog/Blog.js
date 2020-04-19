@@ -4,9 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Carousel from 'react-material-ui-carousel';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
 import MainFeaturedPost from './MainFeaturedPost';
 import FeaturedPost from './FeaturedPost';
 import Sidebar from './Sidebar';
@@ -130,41 +127,11 @@ const featuredPosts = [
     status: true,
     statusText: 'সত্য',
   },
-  {
-    id: 6,
-    title: 'Post 7',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 7,
-    title: 'Post 8',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
 ];
 
 const sidebar = {
-  title: 'About',
-  description:
-    'Etiam porta sem malesuada magna mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.',
-  social: [
-    { name: 'GitHub', icon: GitHubIcon, link: 'http://github.com/' },
-    { name: 'Twitter', icon: TwitterIcon, link: 'https://twitter.com' },
-    { name: 'Facebook', icon: FacebookIcon, link: 'https://www.facebook.com/' },
-  ],
+  reportButtonText: 'রিপোর্ট',
+  reportButtonDesc: 'আপনি যদি কোনো গুজব কিংবা ভুয়া তথ্য/পোস্ট/স্ক্রিনশট/ভিডিও আমাদের কাছে পৌঁছে দিতে চান, তাহলে উপরের "রিপোর্ট" বাটনে ক্লিক করে জানাতে পারেন',
 };
 
 export default function Blog() {
@@ -194,9 +161,8 @@ export default function Blog() {
             </Grid>
             <Grid item xs={12} lg={3}>
               <Sidebar
-                title={sidebar.title}
-                description={sidebar.description}
-                social={sidebar.social}
+                reportButtonText={sidebar.reportButtonText}
+                reportButtonDesc={sidebar.reportButtonDesc}
               />
             </Grid>
           </Grid>

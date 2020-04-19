@@ -18,6 +18,7 @@ const statusCardInsetX = '50px';
 const useStyles = makeStyles({
   card: {
     padding: 20,
+    justifyItems: 'center',
   },
   cardDetails: {
     width: 210,
@@ -44,7 +45,7 @@ export default function FeaturedPost(props) {
   const { post, height, maxChars } = props;
 
   return (
-    <CardActionArea component="a" href={post.link}>
+    <CardActionArea component="a" href={post.link} style={{ display: 'flex' }}>
       <Badge
         badgeContent={(
           <Card
