@@ -1,0 +1,30 @@
+.Footer{
+    background-color: black;
+    display: block;
+    justify-content: space-evenly;
+    padding: 20px 0;
+}
+
+.col{
+    width: 350px;
+    height: 300px;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.title{
+    color: white;
+    text-align: center;
+}
+
+.details{
+    color: white;
+    text-align: center;
+}
+
+@media screen and (min-width: 1280px){
+    .Footer{
+        display: flex;
+    }
+}

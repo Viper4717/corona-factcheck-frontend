@@ -19,6 +19,7 @@ function App() {
     <div className="App">
       <Header links={headerLinks} />
       <Blog />
+      <Footer/>
     </div>
   );
 }
