@@ -40,6 +40,11 @@ const useStyles = makeStyles({
   },
 });
 
+const statusText = {
+  true: 'সত্য',
+  false: 'মিথ্যা',
+};
+
 export default function FeaturedPost(props) {
   const classes = useStyles();
   const { post, height, maxChars } = props;
@@ -57,7 +62,7 @@ export default function FeaturedPost(props) {
               paragraph
               align="center"
             >
-              {post.statusText}
+              {post.status ? statusText.true : statusText.false}
             </Typography>
           </Card>
         )}
