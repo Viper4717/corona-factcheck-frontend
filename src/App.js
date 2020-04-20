@@ -7,6 +7,7 @@ import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
 import Article from './components/article/Article';
 import Posts from './components/posts/Posts';
+import TrueFalse from './components/truefalse/TrueFalse';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
