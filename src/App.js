@@ -6,6 +6,7 @@ import Blog from './components/blog/Blog';
 import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
 import Article from './components/article/Article';
+import Posts from './components/posts/Posts';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
@@ -26,6 +27,7 @@ function App() {
           <Route exact path="/extension" component={Extension} />
         </Switch>
       </BrowserRouter>
+      <Posts/>
       <Footer />
     </div>
   );

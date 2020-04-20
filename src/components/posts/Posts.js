@@ -11,7 +11,7 @@ import './Posts.css'
 const cardHeight = '12rem';
 
 const useStyles = makeStyles((theme) => ({
-  Blog: {
+  Posts: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     minHeight: "100vh",
@@ -93,65 +93,52 @@ const featuredPosts = [
   },
 ];
 
-function loadData(data, setData) {
+// function loadData(data, setData) {
 
-  // load featured posts
-  Axios({
-    method: 'GET',
-    url: `${serverUrl}/featured-posts`,
-  }).then((response) => {
-    const featuredPosts = response.data.map((i) => ({
-      id: i.id,
-      date: new Date(i.post.created_at).toDateString(),
-      title: i.post.title,
-      description: i.post.desc,
-      image: `${serverUrl}/${i.post.img.url}`,
-      imageText: i.post.img.caption,
-      link: `${serverUrl}/${i.post.img.url}`, // temporary replacement for link
-      status: i.post.authenticity,
-    }));
-    setData({ ...data, featuredPosts });
-  });
-}
+//   // load featured posts
+//   Axios({
+//     method: 'GET',
+//     url: `${serverUrl}/featured-posts`,
+//   }).then((response) => {
+//     const featuredPosts = response.data.map((i) => ({
+//       id: i.id,
+//       date: new Date(i.post.created_at).toDateString(),
+//       title: i.post.title,
+//       description: i.post.desc,
+//       image: `${serverUrl}/${i.post.img.url}`,
+//       imageText: i.post.img.caption,
+//       link: `${serverUrl}/${i.post.img.url}`, // temporary replacement for link
+//       status: i.post.authenticity,
+//     }));
+//     setData({ ...data, featuredPosts });
+//   });
+// }
 
 export default function Posts() {
   const classes = useStyles();
-  const [data, setData] = useState({
-    featuredPosts: [],
-  });
+  // const [data, setData] = useState({
+  //   featuredPosts: [],
+  // });
 
-  useEffect(() => {
-    loadData(data, setData);
-  });
+  // useEffect(() => {
+  //   loadData(data, setData);
+  // });
 
   return (
-    <div className={classes.Blog}>
+    <div className={classes.Posts}>
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" backgroundColor="primary">
         <main>
-          <Carousel className={classes.Carousel}>
-            {data.mainFeaturedPosts.map((post) => (
-              <MainFeaturedPost key={post.id} post={post} height={carouselHeight} />
-            ))}
-          </Carousel>
           <Grid container spacing={7} justify="center">
-            <Grid container item spacing={4} xs={12} lg={9}>
-              {data.featuredPosts.map((post) => (
-                <Grid key={post.id} item xs={12} md={6} lg={6}>
+            {featuredPosts.map((post) => (
+                <Grid key={post.id} item xs={12} md={12} lg={12}>
                   <FeaturedPost
                     key={post.id}
                     post={post}
                     height={cardHeight}
                   />
-                </Grid>
-              ))}
-            </Grid>
-            <Grid item xs={12} lg={3}>
-              <Sidebar
-                reportButtonText={sidebar.reportButtonText}
-                reportButtonDesc={sidebar.reportButtonDesc}
-              />
-            </Grid>
+              </Grid>
+            ))}
           </Grid>
         </main>
       </Container>
