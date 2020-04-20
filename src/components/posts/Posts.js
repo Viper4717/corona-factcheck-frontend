@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
   },
   pageNum: {
+    display: "flex",
+    justifyContent: "center",
     '& > *': {
       marginTop: theme.spacing(2),
     },
