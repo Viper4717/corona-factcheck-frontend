@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import "./Footer.css"
 import Typography from '@material-ui/core/Typography';
+import Axios from 'axios'
 
 
 /*
@@ -9,6 +10,18 @@ import Typography from '@material-ui/core/Typography';
 */
 
 function Footer() {
+  const [contacts, setState] = useState({ data: null });
+
+  useEffect(() => { 
+    setState({ data: null });
+    Axios({
+      method: 'GET',
+      url: 'http://192.168.0.105:1337/contact-us'
+    }).then(x => {
+      setState({data: x.data.contacts.Email});
+    })
+  }, []);
+
   return (
     <div className="Footer">
       <div className="col col1">
@@ -26,7 +39,7 @@ function Footer() {
           যোগাযোগ:
         </Typography>
         <Typography style={{color: "#ffffff"}} variant="body1" gutterBottom>
-          ই-মেইল: <a className="link e_mail" href="/">abcde@gmail.com</a>
+          ই-মেইল: <a className="link e_mail" href="/">{contacts.data}</a>
         </Typography>
       </div>
     </div>
