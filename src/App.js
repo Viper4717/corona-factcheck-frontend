@@ -5,6 +5,7 @@ import Footer from './components/footer/Footer';
 import Blog from './components/blog/Blog';
 import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
+import Article from './components/article/Article';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
