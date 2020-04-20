@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Container from '@material-ui/core/Container';
 import "./AboutUs.css";
 import Axios from 'axios'
+import { serverUrl } from '../../util';
 
 function AboutUs() {
   const [data, setState] = useState({ 
@@ -12,7 +13,7 @@ function AboutUs() {
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: 'http://192.168.0.105:1337/about-us'
+      url: serverUrl + '/about-us'
     }).then(x => {
       console.log("log", x.data)
       setState({

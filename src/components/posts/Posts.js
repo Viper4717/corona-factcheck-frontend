@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   Posts: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    minHeight: "100vh",
   },
   pageNum: {
     display: "flex",
@@ -153,7 +152,7 @@ export default function Posts() {
           <Pagination count={10} variant="outlined"
           shape="rounded" 
           onChange={(event, page) => {
-            console.log("Change Clicked")
+            console.log("Change Clicked", event, page)
           }}
           />
         </div>

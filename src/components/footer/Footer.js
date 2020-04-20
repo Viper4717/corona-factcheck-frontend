@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import "./Footer.css"
 import Typography from '@material-ui/core/Typography';
 import Axios from 'axios'
-
+import { serverUrl } from '../../util';
 
 /*
     Website footer
@@ -10,15 +10,16 @@ import Axios from 'axios'
 */
 
 function Footer() {
-  const [contacts, setState] = useState({ data: null });
+  const [fetchedContacts, setState] = useState({ data: null });
 
   useEffect(() => { 
-    setState({ data: null });
+    setState({ data: "" });
     Axios({
       method: 'GET',
-      url: 'http://192.168.0.105:1337/contact-us'
+      url: serverUrl + '/contact-us'
     }).then(x => {
-      setState({data: x.data.contacts.Email});
+      console.log(x.data)
+      setState({data: x.data.contacts.email});
     })
   }, []);
 
@@ -39,7 +40,7 @@ function Footer() {
           যোগাযোগ:
         </Typography>
         <Typography style={{color: "#ffffff"}} variant="body1" gutterBottom>
-          ই-মেইল: <a className="link e_mail" href="/">{contacts.data}</a>
+          ই-মেইল: <a className="link e_mail" href="/">{fetchedContacts.data}</a>
         </Typography>
       </div>
     </div>
