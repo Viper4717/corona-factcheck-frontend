@@ -27,6 +27,7 @@ function App() {
           <Route exact path="/extension" component={Extension} />
         </Switch>
       </BrowserRouter>
+      <Posts/>
       <Footer />
     </div>
   );

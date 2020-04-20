@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Axios from 'axios';
 import FeaturedPost from '../blog/FeaturedPost';
+import Pagination from '@material-ui/lab/Pagination';
 import { serverUrl } from '../../util';
 import './Posts.css'
 
@@ -15,6 +16,11 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     minHeight: "100vh",
+  },
+  pageNum: {
+    '& > *': {
+      marginTop: theme.spacing(2),
+    },
   },
 }));
 
@@ -141,6 +147,9 @@ export default function Posts() {
             ))}
           </Grid>
         </main>
+        <div className={classes.pageNum}>
+          <Pagination count={10} variant="outlined" shape="rounded" />
+        </div>
       </Container>
     </div>
   );
