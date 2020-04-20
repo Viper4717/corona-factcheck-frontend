@@ -153,7 +153,7 @@ export default function Posts() {
           <Pagination count={10} variant="outlined"
           shape="rounded" 
           onChange={(event, page) => {
-            console.log("Change Clicked")
+            console.log("Change Clicked", event, page)
           }}
           />
         </div>

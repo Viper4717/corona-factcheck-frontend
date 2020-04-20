@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Axios from 'axios'
+import { serverUrl } from '../../util';
 
 /*
     Extension page design
@@ -20,8 +21,9 @@ function Extension() {
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: 'http://192.168.0.105:1337/extensions'
+      url: serverUrl + '/extensions'
     }).then(x => {
+      console.log(x)
       setState({
         downloadLinks: x.data
       })
