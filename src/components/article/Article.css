@@ -1,0 +1,9 @@
+.article{
+    padding: 50px 100px;
+    min-height: 100vh;
+}
+
+.mainBody{
+    font-size: 12pt;
+    text-align: justify;
+}
