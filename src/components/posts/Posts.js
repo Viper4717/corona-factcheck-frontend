@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Carousel from 'react-material-ui-carousel';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Axios from 'axios';
@@ -17,43 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     minHeight: "100vh",
   },
-  Carousel: {
-    marginBottom: theme.spacing(3),
-  },
 }));
-
-const mainFeaturedPosts = [
-  {
-    id: 0,
-    title: 'Top post 1',
-    date: 'Nov 10',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    link: 'https://google.com',
-  },
-  {
-    id: 1,
-    title: 'Top post 2',
-    date: 'Nov 12',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-  },
-  {
-    id: 2,
-    title: 'Top post 3',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-  },
-];
 
 const featuredPosts = [
   {
@@ -130,27 +93,7 @@ const featuredPosts = [
   },
 ];
 
-const sidebar = {
-  reportButtonText: 'রিপোর্ট',
-  reportButtonDesc: 'আপনি যদি কোনো গুজব কিংবা ভুয়া তথ্য/পোস্ট/স্ক্রিনশট/ভিডিও আমাদের কাছে পৌঁছে দিতে চান, তাহলে উপরের "রিপোর্ট" বাটনে ক্লিক করে জানাতে পারেন',
-};
-
 function loadData(data, setData) {
-  // load main featured posts (for carousal)
-  Axios({
-    method: 'GET',
-    url: `${serverUrl}/main-featured-posts`,
-  }).then((response) => {
-    const mainFeaturedPosts = response.data.map((i) => ({
-      id: i.id,
-      title: i.title,
-      description: i.desc,
-      image: `${serverUrl}/${i.img.url}`,
-      imageText: i.img.caption,
-      link: i.link,
-    }));
-    setData({ ...data, mainFeaturedPosts });
-  });
 
   // load featured posts
   Axios({
@@ -174,7 +117,6 @@ function loadData(data, setData) {
 export default function Posts() {
   const classes = useStyles();
   const [data, setData] = useState({
-    mainFeaturedPosts: [],
     featuredPosts: [],
   });
 
