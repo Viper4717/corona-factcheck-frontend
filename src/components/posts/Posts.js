@@ -127,7 +127,7 @@ export default function Posts() {
   return (
     <div className={classes.Posts}>
       <CssBaseline />
-      <Container maxWidth="lg" backgroundColor="primary">
+      <Container maxWidth="lg">
         <main>
           <Grid container spacing={7} justify="center">
             {featuredPosts.map((post) => (
