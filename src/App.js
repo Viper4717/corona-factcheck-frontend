@@ -11,7 +11,7 @@ import Posts from './components/posts/Posts';
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
   { label: 'সত্য/মিথ্যা', link: '' },
-  { label: 'করোনা তথ্য', link: '' },
+  { label: 'করোনা তথ্য', link: '/blogs' },
   { label: 'এক্সটেনশন', link: '/extension' },
   { label: 'আমাদের সম্পর্কে', link: '/aboutUs' },
 ];
@@ -25,9 +25,9 @@ function App() {
           <Route exact path="/" component={Blog} />
           <Route exact path="/aboutUs" component={AboutUs} />
           <Route exact path="/extension" component={Extension} />
+          <Route exact path="/blogs" component={Posts} />
         </Switch>
       </BrowserRouter>
-      <Posts/>
       <Footer />
     </div>
   );

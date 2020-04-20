@@ -150,7 +150,12 @@ export default function Posts() {
           </Grid>
         </main>
         <div className={classes.pageNum}>
-          <Pagination count={10} variant="outlined" shape="rounded" />
+          <Pagination count={10} variant="outlined"
+          shape="rounded" 
+          onChange={(event, page) => {
+            console.log("Change Clicked")
+          }}
+          />
         </div>
       </Container>
     </div>
