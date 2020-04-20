@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   Posts: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
-    minHeight: "100vh",
   },
   pageNum: {
     display: "flex",
