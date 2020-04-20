@@ -29,7 +29,7 @@ function Extension() {
   }, []);
   let outputList = data.downloadLinks;
   return (
-    <div>
+    <div className="extensionPage">
     {outputList.map(s => 
       (
         <div className="extensionPage">

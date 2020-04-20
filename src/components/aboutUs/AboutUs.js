@@ -25,7 +25,7 @@ function AboutUs() {
   var title = data.title
   var desc = data.desc
   return (
-    <div>
+    <div className="aboutUs">
       <Container maxWidth="lg">
       <h2>
       <div dangerouslySetInnerHTML={{ __html: title }} />
