@@ -3,14 +3,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Axios from 'axios';
 import Pagination from '@material-ui/lab/Pagination';
-import Post from './Post';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
+import Axios from 'axios';
+import QueryString from 'query-string';
+import Post from './Post';
 import { serverUrl } from '../../util';
 
 const cardHeight = '12rem';
+const postsPerPage = 2;
 
 const useStyles = makeStyles((theme) => ({
   Posts: {
@@ -26,142 +29,108 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const posts = [
-  {
-    id: 0,
-    title: 'Post 1',
-    date: 'Nov 10',
-    description:
-      "Multiple lines of text that form the lede's",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 1,
-    title: 'Post 2',
-    date: 'Nov 12',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: false,
-    statusText: 'মিথ্যা',
-  },
-  {
-    id: 2,
-    title: 'Post 3',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 3,
-    title: 'Post 4',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 4,
-    title: 'Post 5',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: false,
-    statusText: 'মিথ্যা',
-  },
-  {
-    id: 5,
-    title: 'Post 6',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-];
+function getQueryString(searchText, pageNo) {
+  const searchUri = searchText ? `s=${searchText}&` : '';
+  const pageUri = pageNo ? `p=${pageNo}&` : '';
+  return pageUri + searchUri;
+}
 
-// function loadData(data, setData) {
-
-//   // load featured posts
-//   Axios({
-//     method: 'GET',
-//     url: `${serverUrl}/featured-posts`,
-//   }).then((response) => {
-//     const featuredPosts = response.data.map((i) => ({
-//       id: i.id,
-//       date: new Date(i.post.created_at).toDateString(),
-//       title: i.post.title,
-//       description: i.post.desc,
-//       image: `${serverUrl}/${i.post.img.url}`,
-//       imageText: i.post.img.caption,
-//       link: `${serverUrl}/${i.post.img.url}`, // temporary replacement for link
-//       status: i.post.authenticity,
-//     }));
-//     setData({ ...data, featuredPosts });
-//   });
-// }
-
-export default function Blog() {
+export default function Blog({ location }) {
   const classes = useStyles();
-  // const [data, setData] = useState({
-  //   featuredPosts: [],
-  // });
 
-  // useEffect(() => {
-  //   loadData(data, setData);
-  // });
+  const {
+    s: searchText = '',
+    p: pageNoStr = '0',
+  } = QueryString.parse(location.search);
+  const pageNo = parseInt(pageNoStr, 10);
+
+  const [totalPages, setTotalPages] = useState(0);
+  const [posts, setPosts] = useState([]);
+
+  const searchUri = searchText ? `article_contains=${searchText}&` : '';
+  const start = pageNo * postsPerPage;
+  const limit = postsPerPage;
+  const pagingUri = `_start=${start}&_limit=${limit}&`;
+  const countUrl = `${serverUrl}/posts/count?${searchUri}`;
+  const postsUrl = `${serverUrl}/posts?${searchUri}${pagingUri}`;
+
+  useEffect(() => {
+    Axios
+      .get(countUrl)
+      .then((response) => {
+        const count = parseInt(response.data, 10);
+        const newTotalPages = Math.floor(count / postsPerPage);
+        setTotalPages(newTotalPages);
+        console.log('posts count loaded successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log('failed to load posts count');
+      });
+  }, []);
+
+  useEffect(() => {
+    Axios
+      .get(postsUrl)
+      .then((response) => {
+        const newPosts = response.data.map((i) => ({
+          id: i.id,
+          date: new Date(i.created_at).toDateString(),
+          title: i.title || '',
+          description: i.desc || '',
+          image: i.image
+            ? `${serverUrl}${i.image.formats ? i.image.formats.small.url : i.image.url}`
+            : null,
+          imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
+          link: `/article/${i.id}`,
+          status: i.authenticity,
+        }));
+        setPosts(newPosts);
+        console.log('posts data loaded successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log('failed to load posts data');
+      });
+  }, []);
 
   return (
     <div className={classes.Posts}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <main>
-          <div className="searchBox" style={{display: "flex", justifyContent: "center", marginBottom: "20px"}}>
-                <SearchIcon style={{marginTop: "3px"}}/>
-                <TextField id="full-width-text-field" placeholder="খুঁজুন" fullWidth
-                  style={{marginLeft: "10px", maxWidth: "400px"}} />
-          </div>
-          <Grid container spacing={7} justify="center">
-            {posts.map((post) => (
-              <Grid key={post.id} item xs={12} md={12} lg={12}>
-                <Post
-                  key={post.id}
-                  post={post}
-                  height={cardHeight}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </main>
+        <div className="searchBox" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <SearchIcon style={{ marginTop: '3px' }} />
+          <TextField
+            id="full-width-text-field"
+            placeholder="খুঁজুন"
+            fullWidth
+            style={{ marginLeft: '10px', maxWidth: '400px' }}
+          />
+        </div>
+        <Grid container spacing={7} justify="center">
+          {posts.map((post) => (
+            <Grid key={post.id} item xs={12} md={12} lg={12}>
+              <Post
+                key={post.id}
+                post={post}
+                height={cardHeight}
+              />
+            </Grid>
+          ))}
+        </Grid>
         <div className={classes.pageNum}>
           <Pagination
-            count={10}
-            variant="outlined"
             shape="rounded"
-            onChange={(event, page) => {
-              console.log('Change Clicked', event, page);
-            }}
+            count={totalPages}
+            page={pageNo + 1}
+            renderItem={(item) => (
+              <PaginationItem
+                component="a"
+                href={`/blog?${getQueryString(searchText, item.page - 1)}`}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...item}
+              />
+            )}
           />
         </div>
       </Container>
