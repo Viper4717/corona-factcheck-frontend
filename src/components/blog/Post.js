@@ -45,7 +45,7 @@ const statusText = {
   false: 'মিথ্যা',
 };
 
-export default function FeaturedPost(props) {
+export default function Post(props) {
   const classes = useStyles();
   const { post, height, maxChars } = props;
 
@@ -137,12 +137,12 @@ export default function FeaturedPost(props) {
   );
 }
 
-FeaturedPost.propTypes = {
+Post.propTypes = {
   post: PropTypes.object,
   height: PropTypes.string,
   maxChars: PropTypes.number,
 };
 
-FeaturedPost.defaultProps = {
+Post.defaultProps = {
   maxChars: 80,
 };

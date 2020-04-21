@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainFeaturedPost(props) {
+export default function CarouselPost(props) {
   const classes = useStyles();
   const { post, height, maxChars } = props;
 
@@ -70,12 +70,12 @@ export default function MainFeaturedPost(props) {
   );
 }
 
-MainFeaturedPost.propTypes = {
+CarouselPost.propTypes = {
   post: PropTypes.object,
   height: PropTypes.string,
   maxChars: PropTypes.number,
 };
 
-MainFeaturedPost.defaultProps = {
+CarouselPost.defaultProps = {
   maxChars: 200,
 };

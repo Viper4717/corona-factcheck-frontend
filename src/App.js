@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
-import Blog from './components/blog/Blog';
+import Home from './components/home/Home';
 import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
 import Article from './components/article/Article';
-import Posts from './components/posts/Posts';
+import Blog from './components/blog/Blog';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
@@ -22,10 +22,10 @@ function App() {
         <Header links={headerLinks} />
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={Blog} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/aboutUs" component={AboutUs} />
             <Route exact path="/extension" component={Extension} />
-            <Route exact path="/blogs" component={Posts} />
+            <Route exact path="/blogs" component={Blog} />
           </Switch>
         </BrowserRouter>
       <Footer />
