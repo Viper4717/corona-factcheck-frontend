@@ -21,7 +21,7 @@ function TrueFalse() {
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: serverUrl + '/truefalse'
+      url: serverUrl + '/true-false'
     }).then(x => {
       console.log(x)
       setState({
@@ -32,8 +32,7 @@ function TrueFalse() {
   let outputList = data.downloadLinks;
   return (
     <div className="trueFalsePage">
-    {outputList.map(s => 
-      (
+    {outputList.map((s) => (
         <div className="trueFalsePage">
         <center>
         <Card className="card" variant="outlined">
