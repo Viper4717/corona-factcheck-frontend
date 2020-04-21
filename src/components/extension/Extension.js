@@ -23,16 +23,18 @@ function Extension() {
       method: 'GET',
       url: `${serverUrl}/extensions`,
     }).then((x) => {
-      console.log(x);
       setState({
         downloadLinks: x.data,
-      });
+      })
+    }).catch((error)=>{
+      console.log(error)
     });
   }, []);
 
+
   return (
     <div className="extensionPage">
-      {data.downloadLinks.outputList.map((s) => (
+      {data.downloadLinks.map((s) => (
         <div className="extensionPage">
           <center>
             <Card className="card" variant="outlined">
