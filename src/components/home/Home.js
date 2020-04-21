@@ -38,8 +38,8 @@ function loadData(data, setData) {
           id: i.id,
           title: i.title || '',
           description: i.desc || '',
-          image: `${serverUrl}${i.image.formats ? i.image.formats.medium.url : i.image.url}`,
-          imageText: i.image.caption || i.image.alternativeText,
+          image: i.image ? `${serverUrl}${i.image.formats ? i.image.formats.medium.url : i.image.url}` : null,
+          imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
           link: i.link,
         }));
         setData({ ...data, carouselPosts, carouselLoaded: true });
@@ -59,8 +59,14 @@ function loadData(data, setData) {
           date: new Date(i.post.created_at).toDateString(),
           title: i.post.title || '',
           description: i.post.desc || '',
-          image: `${serverUrl}${i.post.image.formats ? i.post.image.formats.small.url : i.post.image.url}`,
-          imageText: i.post.image.caption || i.post.image.alternativeText || '',
+          image: i.post.image
+            ? `${serverUrl}${i.post.image.formats
+              ? i.post.image.formats.small.url
+              : i.post.image.url}`
+            : null,
+          imageText: i.post.image
+            ? (i.post.image.caption || i.post.image.alternativeText || null)
+            : null,
           link: `/article/${i.post.id}`,
           status: i.post.authenticity,
         }));
