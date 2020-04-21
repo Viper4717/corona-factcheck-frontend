@@ -32,14 +32,14 @@ function loadData(data, setData) {
   // load main featured posts (for carousal)
   Axios({
     method: 'GET',
-    url: `${serverUrl}/main-featured-posts`,
+    url: `${serverUrl}/carousel-posts`,
   }).then((response) => {
     const mainFeaturedPosts = response.data.map((i) => ({
       id: i.id,
       title: i.title,
       description: i.desc,
-      image: `${serverUrl}/${i.img.url}`,
-      imageText: i.img.caption,
+      image: `${serverUrl}${i.image.url}`,
+      imageText: i.image.caption || i.image.alternativeText,
       link: i.link,
     }));
     setData({ ...data, mainFeaturedPosts });
@@ -55,9 +55,9 @@ function loadData(data, setData) {
       date: new Date(i.post.created_at).toDateString(),
       title: i.post.title,
       description: i.post.desc,
-      image: `${serverUrl}/${i.post.img.url}`,
-      imageText: i.post.img.caption,
-      link: `${serverUrl}/${i.post.img.url}`, // temporary replacement for link
+      image: `${serverUrl}${i.post.image.url}`,
+      imageText: i.post.image.caption || i.post.image.alternativeText,
+      link: `${serverUrl}/blog/${i.post.id}`, // temporary replacement for link
       status: i.post.authenticity,
     }));
     setData({ ...data, featuredPosts });
