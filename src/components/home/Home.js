@@ -32,7 +32,7 @@ function loadData(data, setData) {
   if (!data.carouselLoaded) {
     // load main featured posts (for carousal)
     axios
-      .get(`${serverUrl}/carousel-posts`)
+      .get(`${serverUrl}/carousel-posts?_sort=priority:DESC&_limit=5`)
       .then((response) => {
         const carouselPosts = response.data.map((i) => ({
           id: i.id,
@@ -52,7 +52,7 @@ function loadData(data, setData) {
   if (!data.featuredPostsLoaded) {
     // load featured posts
     axios
-      .get(`${serverUrl}/featured-posts`)
+      .get(`${serverUrl}/featured-posts?_sort=priority:DESC&_limit=6`)
       .then((response) => {
         const featuredPosts = response.data.map((i) => ({
           id: i.id,
