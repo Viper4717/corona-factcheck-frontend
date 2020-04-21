@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   cardDetails: {
-    width: '40%',
+    width: '100%',
   },
   cardMedia: {
     width: '60%',
@@ -55,7 +55,7 @@ export default function Post(props) {
         badgeContent={(
           <Card
             className={classes.statusCard}
-            style={{ background: post.status ? green[500] : orange[400] }}
+            style={{ background: post.status ? '#04b376' : orange[400] }}
           >
             <Typography
               className={classes.statusText}
@@ -144,5 +144,5 @@ Post.propTypes = {
 };
 
 Post.defaultProps = {
-  maxChars: 80,
+  maxChars: 100,
 };
