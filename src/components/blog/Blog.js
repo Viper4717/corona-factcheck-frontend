@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
   },
   pageNum: {
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     '& > *': {
       marginTop: theme.spacing(2),
     },
@@ -137,22 +137,24 @@ export default function Blog() {
         <main>
           <Grid container spacing={7} justify="center">
             {posts.map((post) => (
-                <Grid key={post.id} item xs={12} md={12} lg={12}>
-                  <Post
-                    key={post.id}
-                    post={post}
-                    height={cardHeight}
-                  />
+              <Grid key={post.id} item xs={12} md={12} lg={12}>
+                <Post
+                  key={post.id}
+                  post={post}
+                  height={cardHeight}
+                />
               </Grid>
             ))}
           </Grid>
         </main>
         <div className={classes.pageNum}>
-          <Pagination count={10} variant="outlined"
-          shape="rounded" 
-          onChange={(event, page) => {
-            console.log("Change Clicked", event, page)
-          }}
+          <Pagination
+            count={10}
+            variant="outlined"
+            shape="rounded"
+            onChange={(event, page) => {
+              console.log('Change Clicked', event, page);
+            }}
           />
         </div>
       </Container>

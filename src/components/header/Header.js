@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import PropTypes from 'prop-types';
 
 /*
     Website header
@@ -8,7 +9,7 @@ import './Header.css';
 
 function Header(props) {
   const { links } = props;
-  const linksMarkup = props.links.map((link, index) => {
+  const linksMarkup = links.map((link, index) => {
     const linkMarkup = (
       <a className="menu__link" href={link.link}>{link.label}</a>
     );
@@ -42,5 +43,9 @@ function Header(props) {
     </div>
   );
 }
+
+Header.propTypes = {
+  links: PropTypes.array,
+};
 
 export default Header;
