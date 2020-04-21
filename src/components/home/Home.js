@@ -61,7 +61,7 @@ function loadData(data, setData) {
           description: i.post.desc || '',
           image: `${serverUrl}${i.post.image.formats ? i.post.image.formats.small.url : i.post.image.url}`,
           imageText: i.post.image.caption || i.post.image.alternativeText || '',
-          link: `/blog/${i.post.id}`,
+          link: `/article/${i.post.id}`,
           status: i.post.authenticity,
         }));
         setData({ ...data, featuredPosts, featuredPostsLoaded: true });

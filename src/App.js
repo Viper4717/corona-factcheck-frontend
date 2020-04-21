@@ -11,8 +11,8 @@ import Blog from './components/blog/Blog';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
-  { label: 'সত্য/মিথ্যা', link: './trueFalse' },
-  { label: 'করোনা তথ্য', link: '/blogs' },
+  { label: 'সত্য/মিথ্যা', link: '/trueFalse' },
+  { label: 'করোনা তথ্য', link: '/blog' },
   { label: 'এক্সটেনশন', link: '/extension' },
   { label: 'আমাদের সম্পর্কে', link: '/aboutUs' },
 ];
@@ -24,10 +24,11 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/trueFalse" component={TrueFalse} />
-          <Route exact path="/blogs" component={Blog} />
-          <Route exact path="/extension" component={Extension} />
-          <Route exact path="/aboutUs" component={AboutUs} />
+          <Route path="/trueFalse" component={TrueFalse} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/article/:articleId" component={Article} />
+          <Route path="/extension" component={Extension} />
+          <Route path="/aboutUs" component={AboutUs} />
         </Switch>
       </BrowserRouter>
       <Footer />
