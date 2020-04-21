@@ -6,6 +6,8 @@ import Container from '@material-ui/core/Container';
 import Axios from 'axios';
 import Pagination from '@material-ui/lab/Pagination';
 import Post from './Post';
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
 import { serverUrl } from '../../util';
 
 const cardHeight = '12rem';
@@ -135,6 +137,11 @@ export default function Blog() {
       <CssBaseline />
       <Container maxWidth="lg">
         <main>
+          <div className="searchBox" style={{display: "flex", justifyContent: "center", marginBottom: "20px"}}>
+                <SearchIcon style={{marginTop: "3px"}}/>
+                <TextField id="full-width-text-field" placeholder="খুঁজুন" fullWidth
+                  style={{marginLeft: "10px", maxWidth: "400px"}} />
+          </div>
           <Grid container spacing={7} justify="center">
             {posts.map((post) => (
               <Grid key={post.id} item xs={12} md={12} lg={12}>

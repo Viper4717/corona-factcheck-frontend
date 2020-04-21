@@ -31,7 +31,6 @@ function Header(props) {
           </a>
         </h1>
         <div className="menu__right">
-        
           <ul className="menu__list">
             {linksMarkup}
           </ul>
