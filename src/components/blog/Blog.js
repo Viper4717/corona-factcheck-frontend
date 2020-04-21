@@ -3,10 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import axios from 'axios';
 import Pagination from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
+import Axios from 'axios';
+import QueryString from 'query-string';
 import Post from './Post';
 import { serverUrl } from '../../util';
 
@@ -27,39 +29,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function getQueryString(searchText, pageNo) {
+  const searchUri = searchText ? `s=${searchText}&` : '';
+  const pageUri = pageNo ? `p=${pageNo}&` : '';
+  return pageUri + searchUri;
+}
 
-function loadData(data, setData) {
-  if (!data.postsLoaded) {
-    const searchText = encodeURI(data.searchText);
-    const searchUri = searchText ? `article_contains=${searchText}&` : '';
+export default function Blog({ location }) {
+  const classes = useStyles();
 
-    const start = data.pageNo * postsPerPage;
-    const limit = postsPerPage;
-    console.log({ start, limit });
-    const pagingUri = `_start=${start}&_limit=${limit}&`;
+  const {
+    s: searchText = '',
+    p: pageNoStr = '0',
+  } = QueryString.parse(location.search);
+  const pageNo = parseInt(pageNoStr, 10);
 
-    const countUrl = `${serverUrl}/posts/count?${searchUri}`;
-    const url = `${serverUrl}/posts?${searchUri}${pagingUri}`;
+  const [totalPages, setTotalPages] = useState(0);
+  const [posts, setPosts] = useState([]);
 
-    axios
+  const searchUri = searchText ? `article_contains=${searchText}&` : '';
+  const start = pageNo * postsPerPage;
+  const limit = postsPerPage;
+  const pagingUri = `_start=${start}&_limit=${limit}&`;
+  const countUrl = `${serverUrl}/posts/count?${searchUri}`;
+  const postsUrl = `${serverUrl}/posts?${searchUri}${pagingUri}`;
+
+  useEffect(() => {
+    Axios
       .get(countUrl)
       .then((response) => {
         const count = parseInt(response.data, 10);
-        const totalPages = Math.floor(count, postsPerPage);
-        setData({ ...data, totalPages });
+        const newTotalPages = Math.floor(count / postsPerPage);
+        setTotalPages(newTotalPages);
         console.log('posts count loaded successfully');
-        console.log({count, totalPages}, data.totalPages);
       })
       .catch((error) => {
         console.error(error);
         console.log('failed to load posts count');
       });
+  }, []);
 
-    axios
-      .get(url)
+  useEffect(() => {
+    Axios
+      .get(postsUrl)
       .then((response) => {
-        console.log(response);
-        const posts = response.data.map((i) => ({
+        const newPosts = response.data.map((i) => ({
           id: i.id,
           date: new Date(i.created_at).toDateString(),
           title: i.title || '',
@@ -71,64 +85,52 @@ function loadData(data, setData) {
           link: `/article/${i.id}`,
           status: i.authenticity,
         }));
-        setData({ ...data, posts });
+        setPosts(newPosts);
         console.log('posts data loaded successfully');
       })
       .catch((error) => {
         console.error(error);
         console.log('failed to load posts data');
       });
-  }
-}
-
-export default function Blog() {
-  const classes = useStyles();
-  const [data, setData] = useState({
-    pageNo: 0,
-    totalPages: 0,
-    searchText: '',
-    posts: [],
-  });
-
-  useEffect(() => {
-    loadData(data, setData);
-  }, [data.pageNo]);
+  }, []);
 
   return (
     <div className={classes.Posts}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <main>
-          <div className="searchBox" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-            <SearchIcon style={{ marginTop: '3px' }} />
-            <TextField
-              id="full-width-text-field"
-              placeholder="খুঁজুন"
-              fullWidth
-              style={{ marginLeft: '10px', maxWidth: '400px' }}
-            />
-          </div>
-          <Grid container spacing={7} justify="center">
-            {data.posts.map((post) => (
-              <Grid key={post.id} item xs={12} md={12} lg={12}>
-                <Post
-                  key={post.id}
-                  post={post}
-                  height={cardHeight}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </main>
+        <div className="searchBox" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <SearchIcon style={{ marginTop: '3px' }} />
+          <TextField
+            id="full-width-text-field"
+            placeholder="খুঁজুন"
+            fullWidth
+            style={{ marginLeft: '10px', maxWidth: '400px' }}
+          />
+        </div>
+        <Grid container spacing={7} justify="center">
+          {posts.map((post) => (
+            <Grid key={post.id} item xs={12} md={12} lg={12}>
+              <Post
+                key={post.id}
+                post={post}
+                height={cardHeight}
+              />
+            </Grid>
+          ))}
+        </Grid>
         <div className={classes.pageNum}>
           <Pagination
-            count={data.totalPages}
-            variant="outlined"
             shape="rounded"
-            onChange={(_event, page) => {
-              console.log({ totalPages: data.totalPages, page });
-              data.pageNo = page - 1;
-            }}
+            count={totalPages}
+            page={pageNo + 1}
+            renderItem={(item) => (
+              <PaginationItem
+                component="a"
+                href={`/blog?${getQueryString(searchText, item.page - 1)}`}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...item}
+              />
+            )}
           />
         </div>
       </Container>
