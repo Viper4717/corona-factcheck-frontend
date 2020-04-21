@@ -15,6 +15,8 @@ const statusCardWidth = '60px';
 const statusCardInsetY = '20px';
 const statusCardInsetX = '50px';
 
+const cardMediaWidth = '60%';
+
 const useStyles = makeStyles({
   card: {
     padding: 10,
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   cardMedia: {
-    width: '60%',
+    width: cardMediaWidth,
   },
   statusCard: {
     height: statusCardHeight,
@@ -81,6 +83,7 @@ export default function Post(props) {
             className={classes.cardMedia}
             image={post.image}
             title={post.imageTitle}
+            style={{ width: post.image ? cardMediaWidth : '0' }}
           />
           <Card className={classes.card} style={{ height }}>
             <div className={classes.cardDetails}>
@@ -104,6 +107,9 @@ export default function Post(props) {
             className={classes.card}
             style={{
               backgroundImage: `url(${post.image})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
               height,
             }}
           >
