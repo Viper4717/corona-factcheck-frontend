@@ -6,6 +6,7 @@ import Home from './components/home/Home';
 import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
 import Article from './components/article/Article';
+import TrueFalse from './components/truefalse/TrueFalse';
 import Blog from './components/blog/Blog';
 
 const headerLinks = [

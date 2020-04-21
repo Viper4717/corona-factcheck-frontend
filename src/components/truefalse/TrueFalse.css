@@ -1,0 +1,8 @@
+.trueFalsePage{
+    padding: 20px;
+}
+
+.card{
+    display: inline-block;
+    box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.15);
+}
