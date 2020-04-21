@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
-    backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -37,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CarouselPost(props) {
   const classes = useStyles();
-  const { post, height, maxChars } = props;
+  const {
+    post, height,
+    maxTitleChars, maxDescChars,
+  } = props;
 
   return (
     <Link href={post.link} underline="none">
@@ -55,11 +57,13 @@ export default function CarouselPost(props) {
           <Grid item md={6}>
             <div className={classes.mainFeaturedPostContent}>
               <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-                {post.title}
+                {post.title.length > maxTitleChars
+                  ? `${post.title.substr(0, maxTitleChars)}...`
+                  : post.title}
               </Typography>
               <Typography variant="h5" color="inherit" paragraph>
-                {post.description.length > maxChars
-                  ? `${post.description.substr(0, maxChars)} ...`
+                {post.description.length > maxDescChars
+                  ? `${post.description.substr(0, maxDescChars)} ...`
                   : post.description}
               </Typography>
             </div>
@@ -73,9 +77,11 @@ export default function CarouselPost(props) {
 CarouselPost.propTypes = {
   post: PropTypes.object,
   height: PropTypes.string,
-  maxChars: PropTypes.number,
+  maxTitleChars: PropTypes.number,
+  maxDescChars: PropTypes.number,
 };
 
 CarouselPost.defaultProps = {
-  maxChars: 200,
+  maxTitleChars: 100,
+  maxDescChars: 170,
 };
