@@ -44,10 +44,6 @@
     margin-right: 20px;
 }
 
-.menu__list-item:last-child {
-    margin-right: 0;
-}
-
 .menu__link {
     color: #3a3e47;
     height: 100%;

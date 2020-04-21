@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import SearchIcon from '@material-ui/icons/Search';
 import PropTypes from 'prop-types';
 
 /*
@@ -33,6 +34,7 @@ function Header(props) {
           <ul className="menu__list">
             {linksMarkup}
           </ul>
+            <SearchIcon />
         </div>
       </nav>
       <div className="menu__down">
