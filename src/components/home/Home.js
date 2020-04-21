@@ -16,7 +16,7 @@ const cardHeight = '12rem';
 const useStyles = makeStyles((theme) => ({
   Home: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(10),
   },
   Carousel: {
     marginBottom: theme.spacing(3),
