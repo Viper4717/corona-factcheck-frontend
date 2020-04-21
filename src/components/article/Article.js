@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
-import "./Article.css";
-import Axios from 'axios'
+import './Article.css';
+import Axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    height: "300px",
+    height: '300px',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
@@ -33,36 +32,34 @@ const useStyles = makeStyles((theme) => ({
 function Article() {
   const classes = useStyles();
   const [data, setState] = useState({
-    title: "",
-    img: "",
-    article: "",
+    title: '',
+    image: '',
+    article: '',
   });
 
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: `${serverUrl}/article`
-    }).then(x => {
+      url: `${serverUrl}/article`,
+    }).then((x) => {
       setState({
         title: x.data.title,
-        img: x.data.img,
-        article: x.data.article
-      })
-    })
+        image: x.data.img,
+        article: x.data.article,
+      });
+    });
   }, []);
-  var title = data.title
-  var img = data.img
-  var article = data.article
+
   return (
     <div className="article">
       <Container maxWidth="lg">
-        <Paper className={classes.mainFeaturedPost}/>
+        <Paper className={classes.mainFeaturedPost} />
         <div className={classes.mainFeaturedPostContent}>
           <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-             {title}
+            {data.title}
           </Typography>
           <Typography variant="body1" color="inherit" gutterBottom>
-            {article}
+            {data.article}
           </Typography>
         </div>
       </Container>

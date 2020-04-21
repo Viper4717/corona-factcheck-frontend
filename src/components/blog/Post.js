@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   cardDetails: {
-    width: '40%',
+    width: '100%',
   },
   cardMedia: {
     width: '60%',
@@ -45,7 +45,7 @@ const statusText = {
   false: 'মিথ্যা',
 };
 
-export default function FeaturedPost(props) {
+export default function Post(props) {
   const classes = useStyles();
   const { post, height, maxChars } = props;
 
@@ -55,7 +55,7 @@ export default function FeaturedPost(props) {
         badgeContent={(
           <Card
             className={classes.statusCard}
-            style={{ background: post.status ? green[500] : orange[400] }}
+            style={{ background: post.status ? '#04b376' : orange[400] }}
           >
             <Typography
               className={classes.statusText}
@@ -137,12 +137,12 @@ export default function FeaturedPost(props) {
   );
 }
 
-FeaturedPost.propTypes = {
+Post.propTypes = {
   post: PropTypes.object,
   height: PropTypes.string,
   maxChars: PropTypes.number,
 };
 
-FeaturedPost.defaultProps = {
-  maxChars: 80,
+Post.defaultProps = {
+  maxChars: 100,
 };
