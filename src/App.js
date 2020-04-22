@@ -19,21 +19,24 @@ const headerLinks = [
 
 function App() {
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', justifyContent: "space-between",
+       minHeight: '100vh' }}>
       <BrowserRouter>
         <Header
           homePageLink="/"
           searchLink="/blog"
           links={headerLinks}
         />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/trueFalse" component={TrueFalse} />
-          <Route path="/blog" component={Blog} />
-          <Route path="/article/:articleId" component={Article} />
-          <Route path="/extension" component={Extension} />
-          <Route path="/aboutUs" component={AboutUs} />
-        </Switch>
+        <div className="content" style={{display: 'flex', flexDirection: 'column', flex: "1"}}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/trueFalse" component={TrueFalse} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/article/:articleId" component={Article} />
+            <Route path="/extension" component={Extension} />
+            <Route path="/aboutUs" component={AboutUs} />
+          </Switch>
+        </div>
         <Footer aboutUsLink="/aboutUs" />
       </BrowserRouter>
     </div>
