@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Footer.css';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom';
 import Axios from 'axios';
 import { serverUrl } from '../../util';
 
@@ -9,8 +10,8 @@ import { serverUrl } from '../../util';
     @author A.M. Aahad
 */
 
-function Footer() {
-  const [fetchedContacts, setState] = useState({ email: '' });
+function Footer({ aboutUsLink }) {
+  const [contacts, setContacts] = useState({ email: '' });
 
   useEffect(() => {
     Axios({
@@ -18,7 +19,7 @@ function Footer() {
       url: `${serverUrl}/contact-us`,
     }).then((x) => {
       console.log(x.data);
-      setState({ email: x.data.contacts.email });
+      setContacts({ email: x.data.contacts.email });
     }).catch((error) => {
       console.log(error);
     });
@@ -31,9 +32,11 @@ function Footer() {
           সতর্ক হোন, গুজব প্রতিহত করুন
         </Typography>
         <Typography style={{ color: '#ffffff' }} variant="body1" gutterBottom>
-          <a className="link aboutLink" href="#aboutus">
-            আমাদের সম্পর্কে
-          </a>
+          <Link to={aboutUsLink} style={{ textDecoration: 'none' }}>
+            <div className="link aboutLink">
+              আমাদের সম্পর্কে
+            </div>
+          </Link>
         </Typography>
       </div>
       <div className="col col2">
@@ -45,9 +48,9 @@ function Footer() {
           {' '}
           <a
             className="link e_mail"
-            href={`mailto:${fetchedContacts.email}`}
+            href={`mailto:${contacts.email}`}
           >
-            {fetchedContacts.email}
+            {contacts.email}
           </a>
         </Typography>
       </div>

@@ -20,8 +20,12 @@ const headerLinks = [
 function App() {
   return (
     <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header links={headerLinks} />
       <BrowserRouter>
+        <Header
+          homePageLink="/"
+          searchLink="/blog"
+          links={headerLinks}
+        />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/trueFalse" component={TrueFalse} />
@@ -30,8 +34,8 @@ function App() {
           <Route path="/extension" component={Extension} />
           <Route path="/aboutUs" component={AboutUs} />
         </Switch>
+        <Footer aboutUsLink="/aboutUs" />
       </BrowserRouter>
-      <Footer />
     </div>
   );
 }
