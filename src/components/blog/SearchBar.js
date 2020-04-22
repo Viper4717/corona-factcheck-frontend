@@ -5,11 +5,11 @@ import TextField from '@material-ui/core/TextField';
 import { getQueryString } from './PageBar';
 
 export default function SearchBar({
-  searchTextProp,
+  initialSearchText,
   state: { state, setState },
   history,
 }) {
-  const [searchBarText, setSearchBarText] = useState(searchTextProp);
+  const [searchBarText, setSearchBarText] = useState(initialSearchText);
   return (
     <div
       className="searchBox"

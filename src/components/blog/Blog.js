@@ -93,7 +93,7 @@ export default function Blog({ location, history }) {
       <CssBaseline />
       <Container maxWidth="lg">
         <SearchBar
-          searchTextProp={searchTextProp}
+          initialSearchText={searchTextProp}
           state={{ state, setState }}
           history={history}
         />
