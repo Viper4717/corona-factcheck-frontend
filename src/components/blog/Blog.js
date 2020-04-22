@@ -4,7 +4,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Pagination from '@material-ui/lab/Pagination';
-import PaginationItem from '@material-ui/lab/PaginationItem';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 import Axios from 'axios';
@@ -35,26 +34,37 @@ function getQueryString(searchText, pageNo) {
   return pageUri + searchUri;
 }
 
-export default function Blog({ location }) {
-  const classes = useStyles();
-
-  const {
-    s: searchText = '',
-    p: pageNoStr = '0',
-  } = QueryString.parse(location.search);
-  const pageNo = parseInt(pageNoStr, 10);
-
-  const [totalPages, setTotalPages] = useState(0);
-  const [posts, setPosts] = useState([]);
-
+function getServerQueryUrl({ searchText, pageNo }) {
   const searchUri = searchText ? `article_contains=${searchText}&` : '';
   const start = pageNo * postsPerPage;
   const limit = postsPerPage;
   const pagingUri = `_start=${start}&_limit=${limit}&`;
   const countUrl = `${serverUrl}/posts/count?${searchUri}`;
   const postsUrl = `${serverUrl}/posts?${searchUri}${pagingUri}`;
+  return { countUrl, postsUrl };
+}
+
+// eslint-disable-next-line react/prop-types
+export default function Blog({ location, history }) {
+  const classes = useStyles();
+
+  const {
+    s: searchTextProp = '',
+    p: pageNoStrProp = '0',
+  // eslint-disable-next-line react/prop-types
+  } = QueryString.parse(location.search);
+  const pageNoProp = parseInt(pageNoStrProp, 10);
+
+  const [totalPages, setTotalPages] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [searchBarText, setSearchBarText] = useState('');
+  const [state, setState] = useState({
+    searchText: searchTextProp,
+    pageNo: pageNoProp,
+  });
 
   useEffect(() => {
+    const { countUrl } = getServerQueryUrl(state);
     Axios
       .get(countUrl)
       .then((response) => {
@@ -67,9 +77,10 @@ export default function Blog({ location }) {
         console.error(error);
         console.log('failed to load posts count');
       });
-  }, []);
+  }, [state]);
 
   useEffect(() => {
+    const { postsUrl } = getServerQueryUrl(state);
     Axios
       .get(postsUrl)
       .then((response) => {
@@ -92,7 +103,7 @@ export default function Blog({ location }) {
         console.error(error);
         console.log('failed to load posts data');
       });
-  }, []);
+  }, [state]);
 
   return (
     <div className={classes.Posts}>
@@ -102,9 +113,21 @@ export default function Blog({ location }) {
           <SearchIcon style={{ marginTop: '3px' }} />
           <TextField
             id="full-width-text-field"
-            placeholder="খুঁজুন"
             fullWidth
             style={{ marginLeft: '10px', maxWidth: '400px' }}
+            placeholder="খুঁজুন"
+            autoFocus
+            onChange={(event) => setSearchBarText(event.target.value)}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') {
+                // handle search
+                const newUrl = `blog?${getQueryString(encodeURI(searchBarText), 0)}`;
+                // eslint-disable-next-line react/prop-types
+                history.push(newUrl);
+                setState({ searchText: searchBarText, pageNo: 0 });
+                event.preventDefault();
+              }
+            }}
           />
         </div>
         <Grid container spacing={7} justify="center">
@@ -122,15 +145,14 @@ export default function Blog({ location }) {
           <Pagination
             shape="rounded"
             count={totalPages}
-            page={pageNo + 1}
-            renderItem={(item) => (
-              <PaginationItem
-                component="a"
-                href={`/blog?${getQueryString(searchText, item.page - 1)}`}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...item}
-              />
-            )}
+            page={state.pageNo + 1}
+            onChange={(_event, newPage) => {
+              // handle page change
+              const newUrl = `blog?${getQueryString(state.searchText, newPage - 1)}`;
+              // eslint-disable-next-line react/prop-types
+              history.push(newUrl);
+              setState((prevState) => ({ ...prevState, pageNo: newPage - 1 }));
+            }}
           />
         </div>
       </Container>
