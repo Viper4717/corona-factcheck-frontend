@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Extension.css';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';

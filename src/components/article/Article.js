@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const errorImage = 'https://media.istockphoto.com/vectors/vector-realistic-isolated-404-not-found-error-lettering-with-glitch-vector-id990584628';
 
-function Article(props) {
+function Article({ match }) {
   const classes = useStyles();
   const [data, setData] = useState({
     title: '',
@@ -39,7 +39,7 @@ function Article(props) {
     image: '',
     article: '',
   });
-  const { articleId } = props.match.params;
+  const { articleId } = match.params;
 
   useEffect(() => {
     Axios({
@@ -60,7 +60,7 @@ function Article(props) {
         image: errorImage,
       });
     });
-  }, []);
+  }, [articleId]);
 
   console.log(data.image);
   return (
