@@ -57,7 +57,7 @@ export default function Blog({ location, history }) {
 
   const [totalPages, setTotalPages] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [searchBarText, setSearchBarText] = useState('');
+  const [searchBarText, setSearchBarText] = useState(searchTextProp);
   const [state, setState] = useState({
     searchText: searchTextProp,
     pageNo: pageNoProp,
@@ -109,14 +109,22 @@ export default function Blog({ location, history }) {
     <div className={classes.Posts}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <div className="searchBox" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <div
+          className="searchBox"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '20px',
+          }}
+        >
           <SearchIcon style={{ marginTop: '3px' }} />
           <TextField
             id="full-width-text-field"
             fullWidth
+            autoFocus
             style={{ marginLeft: '10px', maxWidth: '400px' }}
             placeholder="খুঁজুন"
-            autoFocus
+            value={searchBarText}
             onChange={(event) => setSearchBarText(event.target.value)}
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
