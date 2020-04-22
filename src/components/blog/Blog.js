@@ -1,38 +1,24 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import Pagination from '@material-ui/lab/Pagination';
-import SearchIcon from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/TextField';
 import Axios from 'axios';
 import QueryString from 'query-string';
-import Post from './Post';
+import SearchBar from './SearchBar';
+import { PageBar } from './PageBar';
+import SearchResults from './SearchResults';
 import { serverUrl } from '../../util';
 
-const cardHeight = '12rem';
-const postsPerPage = 2;
+const postsPerPage = 10;
 
 const useStyles = makeStyles((theme) => ({
   Posts: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
-  pageNum: {
-    display: 'flex',
-    justifyContent: 'center',
-    '& > *': {
-      marginTop: theme.spacing(2),
-    },
-  },
 }));
 
-function getQueryString(searchText, pageNo) {
-  const searchUri = searchText ? `s=${searchText}&` : '';
-  const pageUri = pageNo ? `p=${pageNo}&` : '';
-  return pageUri + searchUri;
-}
 
 function getServerQueryUrl({ searchText, pageNo }) {
   const searchUri = searchText ? `article_contains=${searchText}&` : '';
@@ -44,7 +30,6 @@ function getServerQueryUrl({ searchText, pageNo }) {
   return { countUrl, postsUrl };
 }
 
-// eslint-disable-next-line react/prop-types
 export default function Blog({ location, history }) {
   const classes = useStyles();
 
@@ -57,7 +42,6 @@ export default function Blog({ location, history }) {
 
   const [totalPages, setTotalPages] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [searchBarText, setSearchBarText] = useState(searchTextProp);
   const [state, setState] = useState({
     searchText: searchTextProp,
     pageNo: pageNoProp,
@@ -109,68 +93,17 @@ export default function Blog({ location, history }) {
     <div className={classes.Posts}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <div
-          className="searchBox"
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <SearchIcon style={{ marginTop: '3px' }} />
-          <TextField
-            id="full-width-text-field"
-            fullWidth
-            autoFocus
-            style={{ marginLeft: '10px', maxWidth: '400px' }}
-            placeholder="খুঁজুন"
-            value={searchBarText}
-            onChange={(event) => setSearchBarText(event.target.value)}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                // handle search
-                const newUrl = `blog?${getQueryString(encodeURI(searchBarText), 0)}`;
-                // eslint-disable-next-line react/prop-types
-                history.push(newUrl);
-                setState({ searchText: searchBarText, pageNo: 0 });
-                event.preventDefault();
-              }
-            }}
-          />
-        </div>
-        <Grid container spacing={7} justify="center">
-          {posts.map((post) => (
-            <Grid key={post.id} item xs={12} md={12} lg={12}>
-              <Post
-                key={post.id}
-                post={post}
-                height={cardHeight}
-              />
-            </Grid>
-          ))}
-        </Grid>
-        {() => {
-          // only render pagination if there are more than 1 page
-          if (totalPages > 1) {
-            return (
-              <div className={classes.pageNum}>
-                <Pagination
-                  shape="rounded"
-                  count={totalPages}
-                  page={state.pageNo + 1}
-                  onChange={(_event, newPage) => {
-                    // handle page change
-                    const newUrl = `blog?${getQueryString(state.searchText, newPage - 1)}`;
-                    // eslint-disable-next-line react/prop-types
-                    history.push(newUrl);
-                    setState((prevState) => ({ ...prevState, pageNo: newPage - 1 }));
-                  }}
-                />
-              </div>
-            );
-          }
-          return null;
-        }}
+        <SearchBar
+          searchTextProp={searchTextProp}
+          state={{ state, setState }}
+          history={history}
+        />
+        <SearchResults posts={posts} />
+        <PageBar
+          totalPages={totalPages}
+          state={{ state, setState }}
+          history={history}
+        />
       </Container>
     </div>
   );
