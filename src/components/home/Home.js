@@ -37,7 +37,7 @@ function loadData(data, setData) {
           imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
           link: i.link,
         }));
-        setData({ ...data, carouselPosts, carouselLoaded: true});
+        setData({ ...data, carouselPosts, carouselLoaded: true });
         console.log('carousel data loaded successfully');
       })
       .catch((error) => {
@@ -72,15 +72,21 @@ function loadData(data, setData) {
         console.error(error);
       });
   }
-  if(!data.reportLinkLoaded){
+  if (!data.reportLinkLoaded) {
     // load report text and link
     axios
       .get(`${serverUrl}/report-link`)
-      .then((response)=>{
+      .then((response) => {
         const fetchedReportText = response.data.title;
         const fetchedReportLink = response.data.url;
-        const fetchedReportDesc = response.data.desc
-        setData({...data, reportText: fetchedReportText, reportLink: fetchedReportLink, reportLinkLoaded: true, reportDesc: fetchedReportDesc});
+        const fetchedReportDesc = response.data.desc;
+        setData({
+          ...data,
+          reportText: fetchedReportText,
+          reportLink: fetchedReportLink,
+          reportLinkLoaded: true,
+          reportDesc: fetchedReportDesc,
+        });
         console.log('featured posts data loaded successfully');
       })
       .catch((error) => {
@@ -97,9 +103,9 @@ export default function Home() {
     reportLinkLoaded: false,
     carouselPosts: [],
     featuredPosts: [],
-    reportText: "রিপোর্ট",
-    reportLink: "",
-    reportDesc: "",
+    reportText: 'রিপোর্ট',
+    reportLink: '',
+    reportDesc: '',
   });
 
   useEffect(() => {
