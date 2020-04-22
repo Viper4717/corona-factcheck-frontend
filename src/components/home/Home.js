@@ -23,11 +23,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sidebar = {
-  reportButtonText: 'রিপোর্ট',
-  reportButtonDesc: 'আপনি যদি কোনো গুজব কিংবা ভুয়া তথ্য/পোস্ট/স্ক্রিনশট/ভিডিও আমাদের কাছে পৌঁছে দিতে চান, তাহলে উপরের "রিপোর্ট" বাটনে ক্লিক করে জানাতে পারেন',
-};
-
 function loadData(data, setData) {
   if (!data.carouselLoaded) {
     // load main featured posts (for carousal)
@@ -42,7 +37,7 @@ function loadData(data, setData) {
           imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
           link: i.link,
         }));
-        setData({ ...data, carouselPosts, carouselLoaded: true });
+        setData({ ...data, carouselPosts, carouselLoaded: true});
         console.log('carousel data loaded successfully');
       })
       .catch((error) => {
@@ -77,6 +72,21 @@ function loadData(data, setData) {
         console.error(error);
       });
   }
+  if(!data.reportLinkLoaded){
+    // load report text and link
+    axios
+      .get(`${serverUrl}/report-link`)
+      .then((response)=>{
+        const fetchedReportText = response.data.title;
+        const fetchedReportLink = response.data.url;
+        const fetchedReportDesc = response.data.desc
+        setData({...data, reportText: fetchedReportText, reportLink: fetchedReportLink, reportLinkLoaded: true, reportDesc: fetchedReportDesc});
+        console.log('featured posts data loaded successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 }
 
 export default function Home() {
@@ -84,8 +94,12 @@ export default function Home() {
   const [data, setData] = useState({
     carouselLoaded: false,
     featuredPostsLoaded: false,
+    reportLinkLoaded: false,
     carouselPosts: [],
     featuredPosts: [],
+    reportText: "রিপোর্ট",
+    reportLink: "",
+    reportDesc: "",
   });
 
   useEffect(() => {
@@ -116,8 +130,9 @@ export default function Home() {
             </Grid>
             <Grid item xs={12} lg={3}>
               <Sidebar
-                reportButtonText={sidebar.reportButtonText}
-                reportButtonDesc={sidebar.reportButtonDesc}
+                reportButtonText={data.reportText}
+                reportButtonLink={data.reportLink}
+                reportButtonDesc={data.reportDesc}
               />
             </Grid>
           </Grid>

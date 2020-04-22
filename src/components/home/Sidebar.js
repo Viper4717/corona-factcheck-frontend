@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Sidebar(props) {
-  const { reportButtonText, reportButtonDesc } = props;
+  const { reportButtonText, reportButtonDesc, reportButtonLink } = props;
   const classes = useStyles();
 
   return (
@@ -42,6 +42,7 @@ export default function Sidebar(props) {
         <Button
           className={classes.reportButton}
           variant="contained"
+          href={reportButtonLink}
         >
           {reportButtonText}
         </Button>
