@@ -62,7 +62,7 @@ export default function Blog({ location, history }) {
       .get(countUrl)
       .then((response) => {
         const count = parseInt(response.data, 10);
-        const newTotalPages = Math.floor(count / postsPerPage);
+        const newTotalPages = Math.ceil(count / postsPerPage);
         setTotalPages(newTotalPages);
         console.log('posts count loaded successfully');
       })
