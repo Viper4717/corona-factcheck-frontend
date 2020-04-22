@@ -2,12 +2,10 @@
 import React, { useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
-import { getQueryString } from './PageBar';
 
 export default function SearchBar({
   initialSearchText,
-  state: { state, setState },
-  history,
+  onSearch,
 }) {
   const [searchBarText, setSearchBarText] = useState(initialSearchText);
   return (
@@ -30,11 +28,7 @@ export default function SearchBar({
         onChange={(event) => setSearchBarText(event.target.value)}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
-            // handle search
-            const newUrl = `blog?${getQueryString(encodeURI(searchBarText), 0)}`;
-            // eslint-disable-next-line react/prop-types
-            history.push(newUrl);
-            setState({ searchText: searchBarText, pageNo: 0 });
+            onSearch(searchBarText);
             event.preventDefault();
           }
         }}

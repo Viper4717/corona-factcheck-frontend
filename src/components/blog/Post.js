@@ -48,26 +48,34 @@ const statusText = {
   false: 'মিথ্যা',
 };
 
+/* Card shown inside badge */
+function StatusCard({ status /* authenticity */ }) {
+  const classes = useStyles();
+
+  return (
+    <Card
+      className={classes.statusCard}
+      style={{ background: status ? '#04b376' : orange[400] }}
+    >
+      <Typography
+        className={classes.statusText}
+        paragraph
+        align="center"
+      >
+        {status ? statusText.true : statusText.false}
+      </Typography>
+    </Card>
+  );
+}
+
+/* Card showing the title, date and image of a post */
 export default function Post({ post, height, maxChars }) {
   const classes = useStyles();
 
   return (
     <CardActionArea component={Link} to={post.link}>
       <Badge
-        badgeContent={(
-          <Card
-            className={classes.statusCard}
-            style={{ background: post.status ? '#04b376' : orange[400] }}
-          >
-            <Typography
-              className={classes.statusText}
-              paragraph
-              align="center"
-            >
-              {post.status ? statusText.true : statusText.false}
-            </Typography>
-          </Card>
-        )}
+        badgeContent={(<StatusCard status={post.status} />)}
         variant="standard"
         overlap="rectangle"
         anchorOrigin={{
@@ -79,6 +87,7 @@ export default function Post({ post, height, maxChars }) {
         }}
       >
         <Hidden xsDown>
+          {/* On desktop screen card media and card text is side by side */}
           <CardMedia
             className={classes.cardMedia}
             image={post.image}
@@ -93,7 +102,7 @@ export default function Post({ post, height, maxChars }) {
                 </Typography>
                 <Typography variant="subtitle1" paragraph align="left">
                   {/* If description is larger than maxChars
-                replace extra chars with ... */}
+                replace extra chars with ellipsis */}
                   {post.title.length > maxChars
                     ? `${post.title.substr(0, maxChars)} ...`
                     : post.title}
@@ -103,6 +112,7 @@ export default function Post({ post, height, maxChars }) {
           </Card>
         </Hidden>
         <Hidden smUp>
+          {/* On mobile screen card background is image and text is on top */}
           <Card
             className={classes.card}
             style={{

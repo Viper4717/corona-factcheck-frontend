@@ -5,11 +5,11 @@ import Container from '@material-ui/core/Container';
 import Axios from 'axios';
 import QueryString from 'query-string';
 import SearchBar from './SearchBar';
-import { PageBar } from './PageBar';
+import PageBar from './PageBar';
 import SearchResults from './SearchResults';
 import { serverUrl } from '../../util';
 
-const postsPerPage = 10;
+const postsPerPage = 10; // number of posts in one page
 
 const useStyles = makeStyles((theme) => ({
   Posts: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+/* generate server query url using searchText and pageNo */
 function getServerQueryUrl({ searchText, pageNo }) {
   const searchUri = searchText ? `article_contains=${searchText}&` : '';
   const start = pageNo * postsPerPage;
@@ -29,9 +29,18 @@ function getServerQueryUrl({ searchText, pageNo }) {
   return { countUrl, postsUrl };
 }
 
+/* generate query string (for url) based on searchText and pageNo */
+export function getQueryString(searchText, pageNo) {
+  const searchUri = searchText ? `s=${searchText}&` : '';
+  const pageUri = pageNo ? `p=${pageNo}&` : '';
+  return pageUri + searchUri;
+}
+
+/* Paginated linear column of Posts (with search bar) */
 export default function Blog({ location, history }) {
   const classes = useStyles();
 
+  // get search text and page no from url
   const {
     s: searchTextProp = '',
     p: pageNoStrProp = '0',
@@ -48,6 +57,7 @@ export default function Blog({ location, history }) {
 
   useEffect(() => {
     const { countUrl } = getServerQueryUrl(state);
+    // get total count for current search
     Axios
       .get(countUrl)
       .then((response) => {
@@ -64,6 +74,7 @@ export default function Blog({ location, history }) {
 
   useEffect(() => {
     const { postsUrl } = getServerQueryUrl(state);
+    // get posts for current search and page no.
     Axios
       .get(postsUrl)
       .then((response) => {
@@ -94,14 +105,21 @@ export default function Blog({ location, history }) {
       <Container maxWidth="lg">
         <SearchBar
           initialSearchText={searchTextProp}
-          state={{ state, setState }}
-          history={history}
+          onSearch={(searchBarText) => {
+            const newUrl = `blog?${getQueryString(encodeURI(searchBarText), 0)}`;
+            history.push(newUrl);
+            setState({ searchText: searchBarText, pageNo: 0 });
+          }}
         />
         <SearchResults posts={posts} />
         <PageBar
           totalPages={totalPages}
-          state={{ state, setState }}
-          history={history}
+          pageNo={state.pageNo}
+          onPageChange={(newPageNo) => {
+            const newUrl = `blog?${getQueryString(state.searchText, newPageNo - 1)}`;
+            history.push(newUrl);
+            setState((prevState) => ({ ...prevState, pageNo: newPageNo - 1 }));
+          }}
         />
       </Container>
     </div>
