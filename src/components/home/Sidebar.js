@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -29,8 +28,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Sidebar(props) {
-  const { reportButtonText, reportButtonDesc } = props;
+export default function Sidebar({
+  reportButtonText,
+  reportButtonDesc,
+  reportButtonLink,
+}) {
   const classes = useStyles();
 
   return (
@@ -42,6 +44,7 @@ export default function Sidebar(props) {
         <Button
           className={classes.reportButton}
           variant="contained"
+          href={reportButtonLink}
         >
           {reportButtonText}
         </Button>
@@ -52,8 +55,3 @@ export default function Sidebar(props) {
     </Grid>
   );
 }
-
-Sidebar.propTypes = {
-  reportButtonText: PropTypes.string,
-  reportButtonDesc: PropTypes.string,
-};
