@@ -11,26 +11,34 @@ import Blog from './components/blog/Blog';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
-  { label: 'সত্য/মিথ্যা', link: './trueFalse' },
-  { label: 'করোনা তথ্য', link: '/blogs' },
+  { label: 'সত্য/মিথ্যা', link: '/trueFalse' },
+  { label: 'করোনা তথ্য', link: '/blog' },
   { label: 'এক্সটেনশন', link: '/extension' },
   { label: 'আমাদের সম্পর্কে', link: '/aboutUs' },
 ];
 
 function App() {
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Header links={headerLinks} />
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', justifyContent: "space-between",
+       minHeight: '100vh' }}>
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/trueFalse" component={TrueFalse} />
-          <Route exact path="/blogs" component={Blog} />
-          <Route exact path="/extension" component={Extension} />
-          <Route exact path="/aboutUs" component={AboutUs} />
-        </Switch>
+        <Header
+          homePageLink="/"
+          searchLink="/blog"
+          links={headerLinks}
+        />
+        <div className="content" style={{display: 'flex', flexDirection: 'column', flex: "1"}}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/trueFalse" component={TrueFalse} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/article/:articleId" component={Article} />
+            <Route path="/extension" component={Extension} />
+            <Route path="/aboutUs" component={AboutUs} />
+          </Switch>
+        </div>
+        <Footer aboutUsLink="/aboutUs" />
       </BrowserRouter>
-      <Footer />
     </div>
   );
 }

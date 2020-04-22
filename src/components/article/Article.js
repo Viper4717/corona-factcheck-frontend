@@ -5,22 +5,22 @@ import Axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+import Markdown from 'react-markdown/with-html';
 import { serverUrl } from '../../util';
+import 'typeface-roboto';
 
 const useStyles = makeStyles((theme) => ({
-  mainFeaturedPost: {
+  articleHeading: {
     position: 'relative',
     backgroundColor: theme.palette.grey[800],
     color: theme.palette.common.white,
     marginBottom: theme.spacing(4),
-    height: '300px',
+    height: '350px',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
   },
-  mainFeaturedPostContent: {
+  articleContent: {
     position: 'relative',
     padding: theme.spacing(3),
     [theme.breakpoints.up('sm')]: {
@@ -29,38 +29,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Article() {
+const errorImage = 'https://media.istockphoto.com/vectors/vector-realistic-isolated-404-not-found-error-lettering-with-glitch-vector-id990584628';
+
+function Article(props) {
   const classes = useStyles();
-  const [data, setState] = useState({
+  const [data, setData] = useState({
     title: '',
+    date: '',
     image: '',
     article: '',
   });
+  const { articleId } = props.match.params;
 
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: `${serverUrl}/article`,
-    }).then((x) => {
-      setState({
-        title: x.data.title,
-        image: x.data.img,
-        article: x.data.article,
+      url: `${serverUrl}/posts/${articleId}`,
+    }).then((response) => {
+      const x = response.data;
+      setData({
+        title: x.title,
+        image: `${serverUrl}${x.image.formats ? x.image.formats.medium.url : x.image.url}`,
+        date: new Date(x.created_at).toDateString(),
+        article: x.article,
+      });
+    }).catch((error) => {
+      console.log(error);
+      setData({
+        title: 'Article Not Found',
+        image: errorImage,
       });
     });
   }, []);
 
+  console.log(data.image);
   return (
     <div className="article">
       <Container maxWidth="lg">
-        <Paper className={classes.mainFeaturedPost} />
-        <div className={classes.mainFeaturedPostContent}>
-          <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+        <Paper
+          className={classes.articleHeading}
+          style={{ backgroundImage: `url(${data.image})` }}
+        />
+        <div className={classes.articleContent}>
+          <Typography
+            component="h1"
+            variant="h3"
+            color="inherit"
+            gutterBottom
+          >
             {data.title}
           </Typography>
-          <Typography variant="body1" color="inherit" gutterBottom>
-            {data.article}
+          <Typography
+            component="subtitle1"
+            variant="h5"
+            color="textSecondary"
+          >
+            {data.date}
           </Typography>
+          <div style={{ fontFamily: 'Roboto' }}>
+            <Markdown
+              source={data.article}
+              escapeHtml={false}
+            />
+          </div>
         </div>
       </Container>
     </div>

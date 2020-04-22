@@ -8,12 +8,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import { Badge } from '@material-ui/core';
-import { green, orange } from '@material-ui/core/colors';
+import { orange } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
 
 const statusCardHeight = '30px';
 const statusCardWidth = '60px';
 const statusCardInsetY = '20px';
 const statusCardInsetX = '50px';
+
+const cardMediaWidth = '60%';
 
 const useStyles = makeStyles({
   card: {
@@ -24,7 +27,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   cardMedia: {
-    width: '60%',
+    width: cardMediaWidth,
   },
   statusCard: {
     height: statusCardHeight,
@@ -45,27 +48,34 @@ const statusText = {
   false: 'মিথ্যা',
 };
 
-export default function Post(props) {
+/* Card shown inside badge */
+function StatusCard({ status /* authenticity */ }) {
   const classes = useStyles();
-  const { post, height, maxChars } = props;
 
   return (
-    <CardActionArea component="a" href={post.link}>
+    <Card
+      className={classes.statusCard}
+      style={{ background: status ? '#04b376' : orange[400] }}
+    >
+      <Typography
+        className={classes.statusText}
+        paragraph
+        align="center"
+      >
+        {status ? statusText.true : statusText.false}
+      </Typography>
+    </Card>
+  );
+}
+
+/* Card showing the title, date and image of a post */
+export default function Post({ post, height, maxChars }) {
+  const classes = useStyles();
+
+  return (
+    <CardActionArea component={Link} to={post.link}>
       <Badge
-        badgeContent={(
-          <Card
-            className={classes.statusCard}
-            style={{ background: post.status ? '#04b376' : orange[400] }}
-          >
-            <Typography
-              className={classes.statusText}
-              paragraph
-              align="center"
-            >
-              {post.status ? statusText.true : statusText.false}
-            </Typography>
-          </Card>
-        )}
+        badgeContent={(<StatusCard status={post.status} />)}
         variant="standard"
         overlap="rectangle"
         anchorOrigin={{
@@ -77,10 +87,12 @@ export default function Post(props) {
         }}
       >
         <Hidden xsDown>
+          {/* On desktop screen card media and card text is side by side */}
           <CardMedia
             className={classes.cardMedia}
             image={post.image}
             title={post.imageTitle}
+            style={{ width: post.image ? cardMediaWidth : '0' }}
           />
           <Card className={classes.card} style={{ height }}>
             <div className={classes.cardDetails}>
@@ -90,7 +102,7 @@ export default function Post(props) {
                 </Typography>
                 <Typography variant="subtitle1" paragraph align="left">
                   {/* If description is larger than maxChars
-                replace extra chars with ... */}
+                replace extra chars with ellipsis */}
                   {post.title.length > maxChars
                     ? `${post.title.substr(0, maxChars)} ...`
                     : post.title}
@@ -100,10 +112,14 @@ export default function Post(props) {
           </Card>
         </Hidden>
         <Hidden smUp>
+          {/* On mobile screen card background is image and text is on top */}
           <Card
             className={classes.card}
             style={{
               backgroundImage: `url(${post.image})`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
               height,
             }}
           >
