@@ -8,7 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import { Badge } from '@material-ui/core';
-import { green, orange } from '@material-ui/core/colors';
+import { orange } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
 
 const statusCardHeight = '30px';
 const statusCardWidth = '60px';
@@ -47,12 +48,11 @@ const statusText = {
   false: 'মিথ্যা',
 };
 
-export default function Post(props) {
+export default function Post({ post, height, maxChars }) {
   const classes = useStyles();
-  const { post, height, maxChars } = props;
 
   return (
-    <CardActionArea component="a" href={post.link}>
+    <CardActionArea component={Link} to={post.link}>
       <Badge
         badgeContent={(
           <Card
