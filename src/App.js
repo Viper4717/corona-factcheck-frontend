@@ -2,30 +2,43 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
-import Blog from './components/blog/Blog';
+import Home from './components/home/Home';
 import Extension from './components/extension/Extension';
 import AboutUs from './components/aboutUs/AboutUs';
+import Article from './components/article/Article';
+import TrueFalse from './components/truefalse/TrueFalse';
+import Blog from './components/blog/Blog';
 
 const headerLinks = [
   { label: 'নীড়পাতা', link: '/' },
-  { label: 'সত্য/মিথ্যা', link: '' },
-  { label: 'করোনা তথ্য', link: '' },
+  { label: 'সত্য/মিথ্যা', link: '/trueFalse' },
+  { label: 'করোনা তথ্য', link: '/blog' },
   { label: 'এক্সটেনশন', link: '/extension' },
   { label: 'আমাদের সম্পর্কে', link: '/aboutUs' },
 ];
 
 function App() {
   return (
-    <div className="App">
-      <Header links={headerLinks} />
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', justifyContent: "space-between",
+       minHeight: '100vh' }}>
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Blog} />
-          <Route exact path="/aboutUs" component={AboutUs} />
-          <Route exact path="/extension" component={Extension} />
-        </Switch>
+        <Header
+          homePageLink="/"
+          searchLink="/blog"
+          links={headerLinks}
+        />
+        <div className="content" style={{display: 'flex', flexDirection: 'column', flex: "1"}}>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/trueFalse" component={TrueFalse} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/article/:articleId" component={Article} />
+            <Route path="/extension" component={Extension} />
+            <Route path="/aboutUs" component={AboutUs} />
+          </Switch>
+        </div>
+        <Footer aboutUsLink="/aboutUs" />
       </BrowserRouter>
-      <Footer />
     </div>
   );
 }

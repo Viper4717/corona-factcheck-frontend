@@ -1,173 +1,126 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Carousel from 'react-material-ui-carousel';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import MainFeaturedPost from './MainFeaturedPost';
-import FeaturedPost from './FeaturedPost';
-import Sidebar from './Sidebar';
+import Axios from 'axios';
+import QueryString from 'query-string';
+import SearchBar from './SearchBar';
+import PageBar from './PageBar';
+import SearchResults from './SearchResults';
+import { serverUrl } from '../../util';
 
-const carouselHeight = '25rem';
-const cardHeight = '12rem';
+const postsPerPage = 10; // number of posts in one page
 
 const useStyles = makeStyles((theme) => ({
-  Blog: {
+  Posts: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    minHeight: "100vh",
-  },
-  Carousel: {
     marginBottom: theme.spacing(3),
   },
 }));
 
-const mainFeaturedPosts = [
-  {
-    id: 0,
-    title: 'Top post 1',
-    date: 'Nov 10',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    link: 'https://google.com',
-  },
-  {
-    id: 1,
-    title: 'Top post 2',
-    date: 'Nov 12',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-  },
-  {
-    id: 2,
-    title: 'Top post 3',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-  },
-];
+/* generate server query url using searchText and pageNo */
+function getServerQueryUrl({ searchText, pageNo }) {
+  const searchUri = searchText ? `article_contains=${searchText}&` : '';
+  const start = pageNo * postsPerPage;
+  const limit = postsPerPage;
+  const pagingUri = `_start=${start}&_limit=${limit}&`;
+  const countUrl = `${serverUrl}/posts/count?${searchUri}`;
+  const postsUrl = `${serverUrl}/posts?${searchUri}${pagingUri}`;
+  return { countUrl, postsUrl };
+}
 
-const featuredPosts = [
-  {
-    id: 0,
-    title: 'Post 1',
-    date: 'Nov 10',
-    description:
-      "Multiple lines of text that form the lede's",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 1,
-    title: 'Post 2',
-    date: 'Nov 12',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: false,
-    statusText: 'মিথ্যা',
-  },
-  {
-    id: 2,
-    title: 'Post 3',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 3,
-    title: 'Post 4',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-  {
-    id: 4,
-    title: 'Post 5',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: false,
-    statusText: 'মিথ্যা',
-  },
-  {
-    id: 5,
-    title: 'Post 6',
-    date: 'Nov 11',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imageText: 'Image Text',
-    link: 'https://google.com',
-    status: true,
-    statusText: 'সত্য',
-  },
-];
+/* generate query string (for url) based on searchText and pageNo */
+export function getQueryString(searchText, pageNo) {
+  const searchUri = searchText ? `s=${searchText}&` : '';
+  const pageUri = pageNo ? `p=${pageNo}&` : '';
+  return pageUri + searchUri;
+}
 
-const sidebar = {
-  reportButtonText: 'রিপোর্ট',
-  reportButtonDesc: 'আপনি যদি কোনো গুজব কিংবা ভুয়া তথ্য/পোস্ট/স্ক্রিনশট/ভিডিও আমাদের কাছে পৌঁছে দিতে চান, তাহলে উপরের "রিপোর্ট" বাটনে ক্লিক করে জানাতে পারেন',
-};
-
-export default function Blog() {
+/* Paginated linear column of Posts (with search bar) */
+export default function Blog({ location, history }) {
   const classes = useStyles();
 
+  // get search text and page no from url
+  const {
+    s: searchTextProp = '',
+    p: pageNoStrProp = '0',
+  // eslint-disable-next-line react/prop-types
+  } = QueryString.parse(location.search);
+  const pageNoProp = parseInt(pageNoStrProp, 10);
+
+  const [totalPages, setTotalPages] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [state, setState] = useState({
+    searchText: searchTextProp,
+    pageNo: pageNoProp,
+  });
+
+  useEffect(() => {
+    const { countUrl } = getServerQueryUrl(state);
+    // get total count for current search
+    Axios
+      .get(countUrl)
+      .then((response) => {
+        const count = parseInt(response.data, 10);
+        const newTotalPages = Math.ceil(count / postsPerPage);
+        setTotalPages(newTotalPages);
+        console.log('posts count loaded successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log('failed to load posts count');
+      });
+  }, [state]);
+
+  useEffect(() => {
+    const { postsUrl } = getServerQueryUrl(state);
+    // get posts for current search and page no.
+    Axios
+      .get(postsUrl)
+      .then((response) => {
+        const newPosts = response.data.map((i) => ({
+          id: i.id,
+          date: new Date(i.created_at).toDateString(),
+          title: i.title || '',
+          description: i.desc || '',
+          image: i.image
+            ? `${serverUrl}${i.image.formats ? i.image.formats.small.url : i.image.url}`
+            : null,
+          imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
+          link: `/article/${i.id}`,
+          status: i.authenticity,
+        }));
+        setPosts(newPosts);
+        console.log('posts data loaded successfully');
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log('failed to load posts data');
+      });
+  }, [state]);
+
   return (
-    <div className={classes.Blog}>
+    <div className={classes.Posts}>
       <CssBaseline />
       <Container maxWidth="lg">
-        <main>
-          <Carousel className={classes.Carousel}>
-            {mainFeaturedPosts.map((post) => (
-              <MainFeaturedPost key={post.id} post={post} height={carouselHeight} />
-            ))}
-          </Carousel>
-          <Grid container spacing={7} justify="center">
-            <Grid container item spacing={4} xs={12} lg={9}>
-              {featuredPosts.map((post) => (
-                <Grid key={post.id} item xs={12} md={6} lg={6}>
-                  <FeaturedPost
-                    key={post.id}
-                    post={post}
-                    height={cardHeight}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-            <Grid item xs={12} lg={3}>
-              <Sidebar
-                reportButtonText={sidebar.reportButtonText}
-                reportButtonDesc={sidebar.reportButtonDesc}
-              />
-            </Grid>
-          </Grid>
-        </main>
+        <SearchBar
+          initialSearchText={searchTextProp}
+          onSearch={(searchBarText) => {
+            const newUrl = `blog?${getQueryString(encodeURI(searchBarText), 0)}`;
+            history.push(newUrl);
+            setState({ searchText: searchBarText, pageNo: 0 });
+          }}
+        />
+        <SearchResults posts={posts} />
+        <PageBar
+          totalPages={totalPages}
+          pageNo={state.pageNo}
+          onPageChange={(newPageNo) => {
+            const newUrl = `blog?${getQueryString(state.searchText, newPageNo - 1)}`;
+            history.push(newUrl);
+            setState((prevState) => ({ ...prevState, pageNo: newPageNo - 1 }));
+          }}
+        />
       </Container>
     </div>
   );
