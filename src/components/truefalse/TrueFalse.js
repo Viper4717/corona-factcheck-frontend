@@ -25,7 +25,7 @@ function TrueFalse() {
     }).then((x) => {
       console.log(x);
       setState({
-        downloadLinks: x.data,
+        downloadLinks: [x.data],
       });
     });
   }, []);
