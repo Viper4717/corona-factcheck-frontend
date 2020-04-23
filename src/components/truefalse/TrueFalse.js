@@ -21,21 +21,28 @@ function TrueFalse() {
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: `${serverUrl}/truefalse`,
+      url: `${serverUrl}/true-false`,
     }).then((x) => {
-      console.log(x);
       setState({
-        downloadLinks: x.data,
+        downloadLinks: [x.data],
       });
+    }).catch((error) => {
+      console.error(error);
+      console.log('failed to load true-false app link');
     });
   }, []);
+
   const outputList = data.downloadLinks;
   return (
     <div className="trueFalsePage">
       {outputList.map((s) => (
         <div className="trueFalsePage">
           <center>
-            <Card className="card" variant="outlined">
+            <Card
+              className="card"
+              variant="outlined"
+              style={{ paddingBottom: '10px' }}
+            >
               <CardContent>
                 <Typography variant="h5" component="h2">
                   {s.title}

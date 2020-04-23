@@ -15,7 +15,6 @@ function AboutUs() {
       method: 'GET',
       url: `${serverUrl}/about-us`,
     }).then((x) => {
-      console.log('log', x.data);
       setState({
         title: x.data.title,
         desc: x.data.desc,
