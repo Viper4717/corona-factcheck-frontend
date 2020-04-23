@@ -21,7 +21,7 @@ function TrueFalse() {
   useEffect(() => {
     Axios({
       method: 'GET',
-      url: `${serverUrl}/truefalse`,
+      url: `${serverUrl}/true-false`,
     }).then((x) => {
       console.log(x);
       setState({
