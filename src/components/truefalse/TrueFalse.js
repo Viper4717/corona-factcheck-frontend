@@ -23,10 +23,12 @@ function TrueFalse() {
       method: 'GET',
       url: `${serverUrl}/true-false`,
     }).then((x) => {
-      console.log(x);
       setState({
         downloadLinks: [x.data],
       });
+    }).catch((error) => {
+      console.error(error);
+      console.log('failed to load true-false app link');
     });
   }, []);
 

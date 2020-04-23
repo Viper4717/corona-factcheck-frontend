@@ -54,7 +54,8 @@ function Article({ match }) {
         article: x.article,
       });
     }).catch((error) => {
-      console.log(error);
+      console.error(error);
+      console.log('failed to load article');
       setData({
         title: 'Article Not Found',
         image: errorImage,
@@ -62,7 +63,6 @@ function Article({ match }) {
     });
   }, [articleId]);
 
-  console.log(data.image);
   return (
     <div className="article">
       <Container maxWidth="lg">

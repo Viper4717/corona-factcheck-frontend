@@ -18,10 +18,10 @@ function Footer({ aboutUsLink }) {
       method: 'GET',
       url: `${serverUrl}/contact-us`,
     }).then((x) => {
-      console.log(x.data);
       setContacts({ email: x.data.contacts.email });
     }).catch((error) => {
-      console.log(error);
+      console.error(error);
+      console.log('failed to load contacts');
     });
   }, []);
 

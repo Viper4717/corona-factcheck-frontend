@@ -27,7 +27,8 @@ function Extension() {
         downloadLinks: x.data,
       });
     }).catch((error) => {
-      console.log(error);
+      console.error(error);
+      console.log('failed to load extension download link');
     });
   }, []);
 
