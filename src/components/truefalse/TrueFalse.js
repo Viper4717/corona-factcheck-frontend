@@ -29,13 +29,18 @@ function TrueFalse() {
       });
     });
   }, []);
+
   const outputList = data.downloadLinks;
   return (
     <div className="trueFalsePage">
       {outputList.map((s) => (
         <div className="trueFalsePage">
           <center>
-            <Card className="card" variant="outlined">
+            <Card
+              className="card"
+              variant="outlined"
+              style={{ paddingBottom: '10px' }}
+            >
               <CardContent>
                 <Typography variant="h5" component="h2">
                   {s.title}

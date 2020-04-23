@@ -25,9 +25,9 @@ function Extension() {
     }).then((x) => {
       setState({
         downloadLinks: x.data,
-      })
-    }).catch((error)=>{
-      console.log(error)
+      });
+    }).catch((error) => {
+      console.log(error);
     });
   }, []);
 
@@ -37,7 +37,11 @@ function Extension() {
       {data.downloadLinks.map((s) => (
         <div className="extensionPage">
           <center>
-            <Card className="card" variant="outlined">
+            <Card
+              className="card"
+              variant="outlined"
+              style={{ paddingBottom: '10px' }}
+            >
               <CardContent>
                 <Typography variant="h5" component="h2">
                   {s.title}
