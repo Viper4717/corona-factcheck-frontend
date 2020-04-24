@@ -37,6 +37,7 @@ function Article({ match }) {
     date: '',
     image: '',
     article: '',
+    loaded: false,
   });
   const clickThreshold = 5;
   const [clickCount, setClickCount] = useState(0);
@@ -54,12 +55,14 @@ function Article({ match }) {
         image: `${serverUrl}${x.image.formats ? x.image.formats.medium.url : x.image.url}`,
         date: new Date(x.created_at).toDateString(),
         article: x.article,
+        loaded: true,
       });
     }).catch((error) => {
       console.error(error);
       console.log('failed to load article');
       setData({
         title: 'Article Not Found',
+        loaded: false,
       });
     });
   }, [articleId]);
@@ -130,7 +133,11 @@ function Article({ match }) {
         <Paper
           className={classes.articleHeading}
           style={{ backgroundImage: `url(${data.image})` }}
-          onClick={() => { setClickCount((prevCount) => prevCount + 1); }}
+          onClick={() => {
+            if (!data.loaded) {
+              setClickCount((prevCount) => prevCount + 1);
+            }
+          }}
         />
         <div className={classes.articleContent}>
           <Typography
