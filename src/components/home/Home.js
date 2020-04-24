@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Carousel from 'react-material-ui-carousel';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import axios from 'axios';
+import Axios from 'axios';
 import CarouselPost from './CarouselPost';
 import FeaturedPost from '../blog/Post';
 import Sidebar from './Sidebar';
@@ -12,6 +12,9 @@ import { serverUrl } from '../../util';
 
 const carouselHeight = '25rem';
 const cardHeight = '12rem';
+
+const totCarouselPosts = 5; // total number of carousel posts to show
+const totFeaturedPosts = 6; // total number of featured posts to show
 
 const useStyles = makeStyles((theme) => ({
   Home: {
@@ -23,94 +26,94 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function loadData(data, setData) {
-  if (!data.carouselLoaded) {
-    // load main featured posts (for carousal)
-    axios
-      .get(`${serverUrl}/carousel-posts?_sort=priority:DESC&_limit=5`)
-      .then((response) => {
-        const carouselPosts = response.data.map((i) => ({
-          id: i.id,
-          title: i.title || '',
-          description: i.desc || '',
-          image: i.image ? `${serverUrl}${i.image.formats ? i.image.formats.medium.url : i.image.url}` : null,
-          imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
-          link: i.link,
-        }));
-        setData({ ...data, carouselPosts, carouselLoaded: true });
-        console.log('carousel data loaded successfully');
-      })
-      .catch((error) => {
-        console.error(error);
+function loadData(
+  setCarouselPosts,
+  setFeaturedPosts,
+  setReportData,
+) {
+  // load report text and link
+  Axios
+    .get(`${serverUrl}/report-link`)
+    .then((response) => {
+      const fetchedReportText = response.data.title;
+      const fetchedReportLink = response.data.url;
+      const fetchedReportDesc = response.data.desc;
+      setReportData({
+        text: fetchedReportText,
+        link: fetchedReportLink,
+        desc: fetchedReportDesc,
       });
-  }
-  if (!data.featuredPostsLoaded) {
-    // load featured posts
-    axios
-      .get(`${serverUrl}/featured-posts?_sort=priority:DESC&_limit=6`)
-      .then((response) => {
-        const featuredPosts = response.data.map((i) => ({
-          id: i.id,
-          date: new Date(i.post.created_at).toDateString(),
-          title: i.post.title || '',
-          description: i.post.desc || '',
-          image: i.post.image
-            ? `${serverUrl}${i.post.image.formats
-              ? i.post.image.formats.small.url
-              : i.post.image.url}`
-            : null,
-          imageText: i.post.image
-            ? (i.post.image.caption || i.post.image.alternativeText || null)
-            : null,
-          link: `/article/${i.post.id}`,
-          status: i.post.authenticity,
-        }));
-        setData({ ...data, featuredPosts, featuredPostsLoaded: true });
-        console.log('featured posts data loaded successfully');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-  if (!data.reportLinkLoaded) {
-    // load report text and link
-    axios
-      .get(`${serverUrl}/report-link`)
-      .then((response) => {
-        const fetchedReportText = response.data.title;
-        const fetchedReportLink = response.data.url;
-        const fetchedReportDesc = response.data.desc;
-        setData({
-          ...data,
-          reportText: fetchedReportText,
-          reportLink: fetchedReportLink,
-          reportLinkLoaded: true,
-          reportDesc: fetchedReportDesc,
-        });
-        console.log('featured posts data loaded successfully');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+      console.log('report data loaded successfully');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  // load main featured posts (for carousal)
+  Axios
+    .get(`${serverUrl}/carousel-posts?_sort=priority:DESC&_limit=${totCarouselPosts}`)
+    .then((response) => {
+      const newCarouselPosts = response.data.map((i) => ({
+        id: i.id,
+        title: i.title || '',
+        description: i.desc || '',
+        image: i.image ? `${serverUrl}${i.image.formats ? i.image.formats.medium.url : i.image.url}` : null,
+        imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
+        link: i.link,
+      }));
+      setCarouselPosts(newCarouselPosts);
+      console.log('carousel data loaded successfully');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  // load featured posts
+  Axios
+    .get(`${serverUrl}/featured-posts?_sort=priority:DESC&_limit=${totFeaturedPosts}`)
+    .then((response) => {
+      const newFeaturedPosts = response.data.map((i) => ({
+        id: i.id,
+        date: new Date(i.post.created_at).toDateString(),
+        title: i.post.title || '',
+        description: i.post.desc || '',
+        image: i.post.image
+          ? `${serverUrl}${i.post.image.formats
+            ? i.post.image.formats.small.url
+            : i.post.image.url}`
+          : null,
+        imageText: i.post.image
+          ? (i.post.image.caption || i.post.image.alternativeText || null)
+          : null,
+        link: `/article/${i.post.id}`,
+        status: i.post.authenticity,
+      }));
+      setFeaturedPosts(newFeaturedPosts);
+      console.log('featured posts data loaded successfully');
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 export default function Home() {
   const classes = useStyles();
-  const [data, setData] = useState({
-    carouselLoaded: false,
-    featuredPostsLoaded: false,
-    reportLinkLoaded: false,
-    carouselPosts: [],
-    featuredPosts: [],
-    reportText: 'রিপোর্ট',
-    reportLink: '',
-    reportDesc: '',
+
+  const [carouselPosts, setCarouselPosts] = useState([]);
+  const [featuredPosts, setFeaturedPosts] = useState([]);
+  const [reportData, setReportData] = useState({
+    text: 'রিপোর্ট',
+    link: '',
+    desc: '',
   });
 
   useEffect(() => {
-    loadData(data, setData);
-  });
+    loadData(
+      setCarouselPosts,
+      setFeaturedPosts,
+      setReportData,
+    );
+  }, []);
 
   return (
     <div className={classes.Home}>
@@ -118,13 +121,13 @@ export default function Home() {
       <Container maxWidth="lg">
         <main>
           <Carousel className={classes.Carousel}>
-            {data.carouselPosts.map((post) => (
+            {carouselPosts.map((post) => (
               <CarouselPost key={post.id} post={post} height={carouselHeight} />
             ))}
           </Carousel>
           <Grid container spacing={7} justify="center">
             <Grid container item spacing={4} xs={12} lg={9}>
-              {data.featuredPosts.map((post) => (
+              {featuredPosts.map((post) => (
                 <Grid key={post.id} item xs={12} md={6} lg={6}>
                   <FeaturedPost
                     key={post.id}
@@ -136,9 +139,9 @@ export default function Home() {
             </Grid>
             <Grid item xs={12} lg={3}>
               <Sidebar
-                reportButtonText={data.reportText}
-                reportButtonLink={data.reportLink}
-                reportButtonDesc={data.reportDesc}
+                reportButtonText={reportData.text}
+                reportButtonLink={reportData.link}
+                reportButtonDesc={reportData.desc}
               />
             </Grid>
           </Grid>
