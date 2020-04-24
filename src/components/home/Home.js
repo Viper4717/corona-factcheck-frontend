@@ -34,26 +34,26 @@ function loadData(
   // load report text and link
   Axios
     .get(`${serverUrl}/report-link`)
-    .then((response) => {
-      const fetchedReportText = response.data.title;
-      const fetchedReportLink = response.data.url;
-      const fetchedReportDesc = response.data.desc;
+    .then(({ data }) => {
+      const fetchedReportText = data.title;
+      const fetchedReportLink = data.url;
+      const fetchedReportDesc = data.desc;
       setReportData({
         text: fetchedReportText,
         link: fetchedReportLink,
         desc: fetchedReportDesc,
       });
-      console.log('report data loaded successfully');
     })
     .catch((error) => {
       console.error(error);
+      console.log("failed to load report data");
     });
 
   // load main featured posts (for carousal)
   Axios
     .get(`${serverUrl}/carousel-posts?_sort=priority:DESC&_limit=${totCarouselPosts}`)
-    .then((response) => {
-      const newCarouselPosts = response.data.map((i) => ({
+    .then(({ data }) => {
+      const newCarouselPosts = data.map((i) => ({
         id: i.id,
         title: i.title || '',
         description: i.desc || '',
@@ -62,17 +62,17 @@ function loadData(
         link: i.link,
       }));
       setCarouselPosts(newCarouselPosts);
-      console.log('carousel data loaded successfully');
     })
     .catch((error) => {
       console.error(error);
+      console.log("failed to load carousel posts");
     });
 
   // load featured posts
   Axios
     .get(`${serverUrl}/featured-posts?_sort=priority:DESC&_limit=${totFeaturedPosts}`)
-    .then((response) => {
-      const newFeaturedPosts = response.data.map((i) => ({
+    .then(({ data }) => {
+      const newFeaturedPosts = data.map((i) => ({
         id: i.id,
         date: new Date(i.post.created_at).toDateString(),
         title: i.post.title || '',
@@ -89,10 +89,10 @@ function loadData(
         status: i.post.authenticity,
       }));
       setFeaturedPosts(newFeaturedPosts);
-      console.log('featured posts data loaded successfully');
     })
     .catch((error) => {
       console.error(error);
+      console.log("failed to load featured posts");
     });
 }
 

@@ -17,8 +17,8 @@ function Footer({ aboutUsLink }) {
     Axios({
       method: 'GET',
       url: `${serverUrl}/contact-us`,
-    }).then((x) => {
-      setContacts({ email: x.data.contacts.email });
+    }).then(({ data }) => {
+      setContacts({ email: data.contacts.email });
     }).catch((error) => {
       console.error(error);
       console.log('failed to load contacts');
