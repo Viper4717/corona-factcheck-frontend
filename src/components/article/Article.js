@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Markdown from 'react-markdown/with-html';
 import { SnakeGame } from 'react-game-snake';
-import { serverUrl } from '../../util';
+import { serverUrl, processImageLink } from '../../util';
 import 'typeface-roboto';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +52,11 @@ function Article({ match }) {
       const x = response.data;
       setData({
         title: x.title,
-        image: `${serverUrl}${x.image.formats ? x.image.formats.medium.url : x.image.url}`,
+        image: processImageLink(
+          x.image.formats
+            ? x.image.formats.medium.url
+            : x.image.url,
+        ),
         date: new Date(x.created_at).toDateString(),
         article: x.article,
         loaded: true,

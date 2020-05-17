@@ -8,7 +8,7 @@ import Axios from 'axios';
 import CarouselPost from './CarouselPost';
 import FeaturedPost from '../blog/Post';
 import Sidebar from './Sidebar';
-import { serverUrl } from '../../util';
+import { serverUrl, processImageLink } from '../../util';
 
 const carouselHeight = '25rem';
 const cardHeight = '12rem';
@@ -46,7 +46,7 @@ function loadData(
     })
     .catch((error) => {
       console.error(error);
-      console.log("failed to load report data");
+      console.log('failed to load report data');
     });
 
   // load main featured posts (for carousal)
@@ -57,7 +57,11 @@ function loadData(
         id: i.id,
         title: i.title || '',
         description: i.desc || '',
-        image: i.image ? `${serverUrl}${i.image.formats ? i.image.formats.medium.url : i.image.url}` : null,
+        image: i.image
+          ? processImageLink(i.image.formats
+            ? i.image.formats.medium.url
+            : i.image.url)
+          : null,
         imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
         link: i.link,
       }));
@@ -65,7 +69,7 @@ function loadData(
     })
     .catch((error) => {
       console.error(error);
-      console.log("failed to load carousel posts");
+      console.log('failed to load carousel posts');
     });
 
   // load featured posts
@@ -78,9 +82,9 @@ function loadData(
         title: i.post.title || '',
         description: i.post.desc || '',
         image: i.post.image
-          ? `${serverUrl}${i.post.image.formats
+          ? processImageLink(i.post.image.formats
             ? i.post.image.formats.small.url
-            : i.post.image.url}`
+            : i.post.image.url)
           : null,
         imageText: i.post.image
           ? (i.post.image.caption || i.post.image.alternativeText || null)
@@ -92,7 +96,7 @@ function loadData(
     })
     .catch((error) => {
       console.error(error);
-      console.log("failed to load featured posts");
+      console.log('failed to load featured posts');
     });
 }
 

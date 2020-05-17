@@ -7,7 +7,7 @@ import QueryString from 'query-string';
 import SearchBar from './SearchBar';
 import PageBar from './PageBar';
 import SearchResults from './SearchResults';
-import { serverUrl } from '../../util';
+import { serverUrl, processImageLink } from '../../util';
 
 const postsPerPage = 10; // number of posts in one page
 
@@ -84,7 +84,11 @@ export default function Blog({ location, history }) {
           title: i.title || '',
           description: i.desc || '',
           image: i.image
-            ? `${serverUrl}${i.image.formats ? i.image.formats.small.url : i.image.url}`
+            ? processImageLink(
+              i.image.formats
+                ? i.image.formats.small.url
+                : i.image.url,
+            )
             : null,
           imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
           link: `/article/${i.id}`,
