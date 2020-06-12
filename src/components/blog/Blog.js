@@ -86,7 +86,9 @@ export default function Blog({ location, history }) {
           image: i.image
             ? processImageLink(
               i.image.formats
-                ? i.image.formats.small.url
+                ? (i.image.formats.medium && i.image.formats.medium.url)
+                || (i.image.formats.small && i.image.formats.small.url)
+                || (i.image.formats.thumbnail && i.image.formats.thumbnail.url)
                 : i.image.url,
             )
             : null,

@@ -59,7 +59,9 @@ function loadData(
         description: i.desc || '',
         image: i.image
           ? processImageLink(i.image.formats
-            ? i.image.formats.medium.url
+            ? (i.image.formats.medium && i.image.formats.medium.url)
+              || (i.image.formats.small && i.image.formats.small.url)
+              || (i.image.formats.thumbnail && i.image.formats.thumbnail.url)
             : i.image.url)
           : null,
         imageText: i.image ? (i.image.caption || i.image.alternativeText || null) : null,
@@ -83,7 +85,9 @@ function loadData(
         description: i.post.desc || '',
         image: i.post.image
           ? processImageLink(i.post.image.formats
-            ? i.post.image.formats.small.url
+            ? (i.post.image.formats.medium && i.post.image.formats.medium.url)
+            || (i.post.image.formats.small && i.post.image.formats.small.url)
+            || (i.post.image.formats.thumbnail && i.post.image.formats.thumbnail.url)
             : i.post.image.url)
           : null,
         imageText: i.post.image

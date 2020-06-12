@@ -54,7 +54,9 @@ function Article({ match }) {
         title: x.title,
         image: processImageLink(
           x.image.formats
-            ? x.image.formats.medium.url
+            ? (x.image.formats.medium && x.image.formats.medium.url)
+            || (x.image.formats.small && x.image.formats.small.url)
+            || (x.image.formats.thumbnail && x.image.formats.thumbnail.url)
             : x.image.url,
         ),
         date: new Date(x.created_at).toDateString(),
